@@ -1,0 +1,3 @@
+= rel-estagio
+
+Repo do relatorio de estagio em latex
