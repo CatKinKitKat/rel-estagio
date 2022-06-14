@@ -1,7 +1,15 @@
 \chapter{A Empresa}
 \label{cap2}
 
-A empresa que me hospedou num estágio foi a \href{https://optiply.nl/}{Optiply}, durante três meses (do segundo semestre do ano letivo de 2021/2022), para uma posição de aprendizagem de desenvolvimento de backend.
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=12cm]{figuras/optiply_logo.png}
+  \caption{Logo da empresa}
+  \label{fig:logo}
+\end{figure}
+\FloatBarrier
+
+A empresa que me hospedou num estágio foi a \href{https://optiply.nl/}{Optiply}, durante três meses, para uma posição de aprendizagem de desenvolvimento de backend.
 
 \section{Caracterização}
 
@@ -9,16 +17,26 @@ A \href{https://optiply.nl/}{Optiply} é uma empresa de software cujo produto/se
 
 Em Évora, esta empresa detém por volta de 20 empregados, dos quais três quartos são engenheiros de software, distribuídos em frontend, backend e integrações.
 
+\section{Produto}
+
+Como referido brevemente na secção anterior esta é uma empresa de SaaS, ou seja um software vendido como um serviço, o uso deste software está associado a uma subscrição que oferece os serviços promovidos. Mais especificamente são serviços de inteligência artificial que fazem sugestões automáticas de compras e promoções para o cliente, facilitando a gestão dos stocks do seu armazém.
+
+\newpage
+
 \section{Organização e Comunicação}
 
 Apesar da empresa deter instalações e equipamentos, esta suporta trabalho remoto, o qual me pareceu ser a escolha da maioria dos empregados que estão em desenvolvimento de software, eu incluso. O qual para a Comunicação da empresa, inter e entre empregados era essencialmente via Slack, com canais de comunicação gerais, divididos em equipas, e comunicação privada. Evitava-se ao máximo o uso de video chamadas, e ao invés de isso, usava-se mensagem de texto, à exceção do \textit{Tech Lead/Team Leader} que usava mensagem de texto e video chamada para coordenar as equipas locais e estrangeiras.
 
 Para a gestão dos projetos, esta é uma empresa \href{https://www.atlassian.com/agile}{\textit{Agile}}, o qual obviamente usa a suite da \href{https://www.atlassian.com/}{Atlassian}, nomeadamente o \href{https://bitbucket.org/}{BitBucket} para hospedar os repositórios de software, bibliotecas e frameworks, como também, o \href{https://jira.atlassian.com/}{Jira}.
 
-\section{Tech Stack}
+\section{\textit{Tech Stack}}
 
-\lipsum
+O serviço oferecido pela empresa foi desenvolvido por um conjunto de tecnologias, dos quais do tempo em que estive ativo consegui identificar que se usa a framework de Javascript: \href{https://angular.io/}{Angular} para a construção do front-end o qual pode ser acedido num browser ou empacotado numa aplicação \href{https://www.electronjs.org/}{Electron}, a qual comunica com um servidor, possivelmente Linux e \textit{\href{https://www.debian.org/}{Debian}-based}. Este servidor detêm variados containers \href{https://www.docker.com/}{Docker}, os quais são a infraestrutura vital do backend do serviço, hospedando as bases de dados \href{https://www.postgresql.org/}{PostgreSQL} e \href{https://www.mongodb.com/}{MongoDB}, e os \textit{microservices}, implementados nas frameworks de \href{https://jdk.java.net/}{Java}: \href{https://micronaut.io/}{Micronaut} (as mais recentes) e \href{https://spring.io/}{Spring}.
 
-\section{Produto}
-
-\lipsum
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=12cm]{figuras/lol.png}
+  \caption{Diagrama exemplar do serviço}
+  \label{fig:diag_eg}
+\end{figure}
+\FloatBarrier
