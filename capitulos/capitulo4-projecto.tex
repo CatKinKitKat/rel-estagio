@@ -1,13 +1,98 @@
 \chapter{Projeto}
 \label{cap4}
 
+Este capítulo descreve o projeto atribuído no estágio e o seu desenvolvimento. Sendo que este capítulo será o mais longo, mas consequentemente o mais importante e o mais complexo.
+
 \section{Introdução}
 
-\lipsum
+Como anteriormente referido foi me destacada a tarefa de Implementação de um projeto no estágio. Este projeto consiste em um software que permite a gestão das especificações de Webshops.
 
-\section{Objectivos}
+Estas Webshops são, como o nome indica, as lojas online as quais são clientes da Optiply. Estas lojas online são responsáveis por fornecer os produtos que os clientes compram e a Optiply é responsável por fornecer a gestão inteligente dos produtos em stock.
 
-\lipsum
+O trabalho foi recebido num \textit{.pdf}, numa reunião de video-conferencia, com o coordenador do estágio (Fábio Belga), o seu subordinado (André Figueira)que ficou encarregado de orientar os estagiários de Backend, e nós (eu, Gonçalo Amaro e o estagiário da universade de Évora, José Azevedo), após a nossa fase formativa do \textit{Onboarding} descrita no capítulo anterior.
+
+Assim, as primeiras secções deste capítulo servem como uma apresentação do equivalente à minha introdução ao projeto.
+
+\section{Objetivos}
+
+O objetivo descrito deste projeto é desenvolver um microserviço que permita a gestão das especificações de Webshops, já o verdadeiro objetivo deste projeto é fornecer treino ao estagiário nas tecnologias da \textit{Tech Stack} da empresa, ou pelo menos num dos projetos da mesma.
+
+\newpage
+
+Essa \textit{Tech Stack} referida é a seguinte:
+
+\begin{itemize}
+  \item Micronaut: Framework de desenvolvimento de microserviços.
+  \item Java: Linguagem de programação.
+  \item Gradle: Sistema de gestão de dependências e tarefas.
+  \item jOOQ: Framework de código-fonte para acesso a bases de dados.
+  \item Flyway: Framework de migração de bases de dados.
+  \item PostgreSQL: Sistema de bases de dados.
+  \item Junit5 (Spock também é aceitável): Framework de testes.
+  \item Mockito: Framework de auxiliar a testes via simulação.
+\end{itemize}
+
+Voltando ao objetivo escrito do projeto (desenvolver um microserviço que permita a gestão das especificações de Webshops), o objetivo é desenvolver uma RESTful API que permita gerir as especificações de Webshops.
+
+Para isso temos de saber que cada Webshop têm um conjunto de especificações, as quais são:
+
+\begin{itemize}
+  \item \textit{URL:} URL da loja online, têm validação e requer protocolo na URL;
+  \item \textit{Handle:} identificador único da loja online;
+  \item \textit{Interest Rate:} taxa de juros que a loja online paga, 20\% é o valor por defeito;
+  \item \textit{Service Level Categories:} categorias de níveis de serviço que a loja têm, são três categorias (A,B e C) e as suas somas requerem ser iguais a 100\%;
+  \item \textit{Contact Email List:} lista de emails de contacto da loja online, têm validação;
+  \item \textbf{Extra:} \textit{Settings:} configurações da loja online:
+        \begin{itemize}
+          \item Enable Multi Supplier: permite múltiplos fornecedores;
+          \item Enable Run Jobs: permite execução de tarefas;
+          \item Currency: moeda da loja online em ISO-4217;
+        \end{itemize}
+\end{itemize}
+
+Sendo que as ultimas especificações (as \textit{Settings}) são Extras, ou seja, não são obrigatórias, mas foram implementadas.
+\newpage
+
+Essa API tem um determinado conjunto de tarefas a cumprir as quais são:
+
+\begin{itemize}
+  \item Obter uma única Webshop;
+  \item Obter várias Webshops:
+        \begin{itemize}
+          \item Deve ser capaz de ordenar e filtrar por qualquer campo da tabela;
+          \item Só é necessário ordenar por um único campo. Os resultados devem ser consistentes com cada pedido. (Se ordenar por Taxa de Juros, como pode-se garantir que os mesmos resultados sejam obtidos em todos os pedidos?)
+          \item Só é necessário filtrar por um único campo. Os filtros suportados são:
+                \begin{itemize}
+                  \item ``:'' significa \textbf{Igual}. Exemplo: handle:optiply 
+                  \item ``\%'' significa \textbf{ILIKE} (semelhante, \textit{case-insensitive}). Exemplo: handle\%optiply
+                  \item \textit{Extra:} ``>'' significa \textbf{Maior Que}. Exemplo: interestRate>20
+                  \item \textit{Extra:} ``<'' significa \textbf{Menor Que}. Exemplo: interestRate<20
+                \end{itemize}
+        \end{itemize}
+  \item Apagar uma única Webshop.
+  \item Criar uma única Webshop.
+  \item Atualizar qualquer campo da Webshop.
+  \item \textit{Extra:} Filtrar por múltiplos campos.
+  \item \textit{Extra:} Criar múltiplas Webshops.
+  \item \textit{Extra:} Obter as configurações da Webshop.
+  \item \textit{Extra:} Atualizar as configurações da Webshop.
+\end{itemize}
+
+Tendo sempre em conta que os resultados devem ser idempotentes e no seu estado mais recente e que os pedidos HTTP retornam:
+
+\begin{itemize}
+  \item Criar deve retornar 201.
+  \item Obter e Atualizar devem retornar 200.
+  \item Apagar deve retornar 204.
+  \item Qualquer pedido deve retornar 404 se a loja não existir.
+  \item Qualquer outro erro interno deve retornar 500 (Erro Interno).
+\end{itemize}
+
+Esta lista (tradução do que está no \textit{.pdf} recebido, que está também no \hyperref[ap1]{Apêndice I}), é bastante extensa, mas é bastante simples para entender o que é.
+
+No entanto é estupidamente obscura a segunda intenção da lista, esta era a lista implícita de \textit{endpoints} da API. O qual inicialmente não vendo uma lista de \textit{endpoints} explicita nem uma mera referência na reunião, a primeira iteração do trabalho usei os \textit{endpoints} que eu achava mais convenientes para o trabalho. Escusado será dizer, que tive de os refazer após a primeira receção de \textit{feedback}.
+
+\newpage
 
 \section{Implementação}
 

@@ -30,6 +30,9 @@
 \usepackage{csquotes}
 \usepackage{longtable}
 \usepackage{placeins}
+\usepackage{enumitem}
+
+\setitemize{itemsep=0.25em}
 
 \pt-en{\RequirePackage[portuges]{babel} }
 {\RequirePackage[english]{babel}}
