@@ -63,19 +63,19 @@ Essa API tem um determinado conjunto de tarefas a cumprir as quais são:
           \item Só é necessário ordenar por um único campo. Os resultados devem ser consistentes com cada pedido. (Se ordenar por Taxa de Juros, como pode-se garantir que os mesmos resultados sejam obtidos em todos os pedidos?)
           \item Só é necessário filtrar por um único campo. Os filtros suportados são:
                 \begin{itemize}
-                  \item ``:'' significa \textbf{Igual}. Exemplo: handle:optiply 
-                  \item ``\%'' significa \textbf{ILIKE} (semelhante, \textit{case-insensitive}). Exemplo: handle\%optiply
-                  \item \textit{Extra:} ``>'' significa \textbf{Maior Que}. Exemplo: interestRate>20
-                  \item \textit{Extra:} ``<'' significa \textbf{Menor Que}. Exemplo: interestRate<20
+                  \item ``:'' significa \textit{Igual}. Exemplo: handle:optiply 
+                  \item ``\%'' significa \textit{ILIKE} (semelhante, \textit{case-insensitive}).\\Exemplo: handle\%optiply
+                  \item \textbf{Extra:} ``>'' significa \textit{Maior Que}. Exemplo: interestRate>20
+                  \item \textbf{Extra:} ``<'' significa \textit{Menor Que}. Exemplo: interestRate<20
                 \end{itemize}
         \end{itemize}
   \item Apagar uma única Webshop.
   \item Criar uma única Webshop.
   \item Atualizar qualquer campo da Webshop.
-  \item \textit{Extra:} Filtrar por múltiplos campos.
-  \item \textit{Extra:} Criar múltiplas Webshops.
-  \item \textit{Extra:} Obter as configurações da Webshop.
-  \item \textit{Extra:} Atualizar as configurações da Webshop.
+  \item \textbf{Extra:} Filtrar por múltiplos campos.
+  \item \textbf{Extra:} Criar múltiplas Webshops.
+  \item \textbf{Extra:} Obter as configurações da Webshop.
+  \item \textbf{Extra:} Atualizar as configurações da Webshop.
 \end{itemize}
 
 Tendo sempre em conta que os resultados devem ser idempotentes e no seu estado mais recente e que os pedidos HTTP retornam:
@@ -90,24 +90,108 @@ Tendo sempre em conta que os resultados devem ser idempotentes e no seu estado m
 
 Esta lista (tradução do que está no \textit{.pdf} recebido, que está também no \hyperref[ap1]{Apêndice I}), é bastante extensa, mas é bastante simples para entender o que é.
 
-No entanto é estupidamente obscura a segunda intenção da lista, esta era a lista implícita de \textit{endpoints} da API. O qual inicialmente não vendo uma lista de \textit{endpoints} explicita nem uma mera referência na reunião, a primeira iteração do trabalho usei os \textit{endpoints} que eu achava mais convenientes para o trabalho. Escusado será dizer, que tive de os refazer após a primeira receção de \textit{feedback}.
+No entanto é estupidamente obscura a segunda intenção da lista, esta era a lista implícita de \textit{endpoints} da API\@.
+
+O qual inicialmente não vendo uma lista de \textit{endpoints} explicita nem uma mera referência na reunião, a primeira iteração do trabalho usei os \textit{endpoints} que eu achava mais convenientes para o trabalho. Escusado será dizer, que tive de os refazer após a primeira receção de \textit{feedback}.
 
 \newpage
 
 \section{Implementação}
 
-\subsection{Inicio do Projecto}
+\subsection{Pré-Requisitos}
 
-\lipsum
+Para começar a implementar a API, precisamos de um conjunto de ferramentas. Essas ferramentas passam por um JDK (um SDK de Java), otimamente algo aberto e conforme os standards de \href{https://openjdk.org/}{OpenJDK}, o qual usei \href{https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html}{Amazon Corretto}, visto à sua licença aberta e gratuita, multiplataforma e vem com suporte de longo prazo que incluirá melhorias de desempenho e correções de segurança.
+
+Para gestão de pacotes e tarefas, precisamos de um gestor de pacotes, o qual usei o \href{https://gradle.org/}{Gradle}, e como um dos meus computadores de trabalho usa \href{https://www.microsoft.com/pt-pt/software-download/windows10} em vez de \href{https://archlinux.org/download/}{Linux}, a instalação do \href{https://gradle.org/}{Gradle} sem um gestor de pacotes e alteração do path, dá-nos jeito usar um IDE que trate desses assuntos, o qual foi-me recomendado (e usado): \href{https://www.jetbrains.com/idea/}{IntelliJ IDEA} da \href{https://www.jetbrains.com/}{JetBrains}.
+
+Para hospedar a base de dados e o projeto, numa pequena rede de containers interna, foi instalado o \href{https://www.docker.com/}{Docker} no \textit{desktop} \href{https://www.microsoft.com/pt-pt/software-download/windows10}{Windows} (e usado o \href{https://podman.io/}{Podman} no portátil \href{https://archlinux.org/download/}{Linux}, pelo simplesmente facto de já o ter instalado previamente).
+
+No entanto ainda nos falta algo bastante importante. Nomeadamente, algo quer faça o Bootstrap do projeto em \href{https://micronaut.io/}{Micronaut}, para isso temos variadas opções:
+
+\begin{itemize}
+  \item Ir ao o \href{https://micronaut.io/launch}{Micronaut Launch Website}
+  \item Usar o \href{https://micronaut.io/download/}{Micronaut CLI} \href{https://micronaut-projects.github.io/micronaut-starter/latest/guide/index.html}{em que temos aqui a documentação}
+  \item Fazer \href{https://curl.se/}{curl} à API do \href{https://micronaut.io/}{Micronaut} Launch \href{https://launch.micronaut.io/create/default/com.optiply.project.webshop?lang=JAVA&build=GRADLE&test=JUNIT&javaVersion=JDK_17&features=jackson-databind&features=kubernetes-reactor-client&features=properties&features=flyway&features=jdbc-hikari&features=jooq&features=postgres&features=r2dbc&features=testcontainers&features=lombok&features=mockito&features=openrewrite&features=asciidoctor&features=logback&features=reactor&features=security-jwt&features=problem-json&features=jackson-xml}{https://launch.micronaut.io/create/default}
+\end{itemize}
+
+\subsection{Inicio do Projeto}
+
+No meu caso em especifico foi-me fornecido um repositório privado no \href{https://bitbucket.org/}{BitBucket}, o qual apenas me foi necessário fazer uma \textit{fork}. O estado desse repositório e da \textit{fork} pode ser visto no neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/tree/07d359ce933dde634f176dc95bf5ac1b3e4bc93d}{\textit{commit}} (\href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST}{num repositório meu} do \href{https://github.com/}{GitHub}, onde no projeto o adicionei como segunda origem, para backup).
+
+Esta diretoria de projeto nos atribuída, pessoalmente achei que era maior e mais complicada que o necessário, talvez esta seja única e o que varia são os projetos que a usam. Com isso em conta eu decidi, fazer uma redução ao projeto, para que ficasse mais simples de trabalhar e não houvessem pacotes ou funcionalidades que não fossem necessárias. Isto pode ser observado neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/commit/3c71d709599662436ae13cf9dcf609a5ca5464e3}{\textit{commit}} (o qual descrição reflete o meu estado mental sobre determinada observação).
+
+Após a redução, o projeto ficou com apenas dois subpacotes para o Gradle gerir, um que contem a aplicação em sí e o outro que trata dos repositórios/classes de transações à base de dados. O numero de pacotes externos e funcionalidades foi reduzido para o mínimo necessário, esses incluíram: \href{https://flywaydb.org/}{Flyway}, \href{http://fasterxml.com/}{Jackson}, \href{https://www.jooq.org/}{jOOQ}, \href{https://junit.org/junit5/}{JUnit}, \href{https://logback.qos.ch/}{Logback}, \href{https://projectlombok.org/}{Lombok}, \href{https://site.mockito.org/}{Mockito}, \href{https://jdbc.postgresql.org/}{Postgres}, \href{https://r2dbc.io/}{R2DBC} e \href{https://projectreactor.io/}{Reactor}.
+
+\newpage
+
+\subsubsection{Detalhes sobre as tecnologias}
+
+\paragraph{\href{https://flywaydb.org/}{Flyway}\\}
+
+O \href{https://flywaydb.org/}{Flyway} é um framework de migrações de bases de dados, que é usado para gerênciar as migrações de bases de dados de projetos Java. Funciona de maneira semelhante às migrações nativas do ASP.NET Core.
+
+Este pacote adiciona essas capacidades a tarefas do Gradle, como o \textit{flywayMigrate} e \textit{flywayInfo}. A migrações são feitas através de um ficheiro de migrações, que é um ficheiro de SQL, dentro da diretoria de migrações (\textit{PROJECT\_ROOT/src/main/resources/db/migrations}), com a versão em que a migração deve ser executada e dois \textit{underscores}.
+
+\paragraph{\href{http://fasterxml.com/}{Jackson}\\}
+
+O \href{http://fasterxml.com/}{Jackson} é um framework de serialização de objetos, que é usado para serializar objetos em JSON.
+
+A serialização é um processo de transformação de um objeto em um JSON, e a deserialização é o processo de transformação de um JSON em um objeto.
+
+Isto é feito principalmente através de um objeto \textit{ObjectMapper}, que é um objeto que implementa a interface \textit{com.fasterxml.jackson.databind.ObjectMapper}.
+
+\paragraph{\href{https://jooq.org/}{jOOQ}\\}
+
+O \href{https://jooq.org/}{jOOQ} é um framework de código-fonte de código-aberto, que é usado para gerir a base de dados. Este funciona de maneira semelhante às operações do Entity Framework Core para ASP.NET Core, sendo que este abstrai as operações de SQL em wrappers programáticos.
+
+\paragraph{\href{https://junit.org/junit5/}{JUnit}\\}
+
+O \href{https://junit.org/junit5/}{JUnit} é um framework de testes, que é usado para gerênciar os testes de unidades. Usado muito na disciplina de Programação Orientada a Objetos.
+
+\paragraph{\href{https://logback.qos.ch/}{Logback}\\}
+
+O \href{https://logback.qos.ch/}{Logback} é um framework de logging, que é usado para gerir os logs de um projeto, com o foco em abstrair o uso de logs ao mais simples possível. É o sucessor do \href{https://log4j.org/}{Log4j}, que foi alvo de uma vulnerabilidade recentemente.
+
+No Windows devemos alterar uma configuração: a desativação do JANSI, que não funciona com alguns Locales, em especial os que o Windows usa.
+
+\paragraph{\href{https://projectlombok.org/}{Lombok}\\}
+
+O \href{https://projectlombok.org/}{Lombok} é um framework de código-fonte de código-aberto, que é usado para gerir a criação de classes de objetos através de anotações. Com estas anotações, abstraímos o código, evitamos repetição e automatizamos muito o processo desenvolvimento.
+
+Por exemplo a anotação \textit{@Getter} faz com que o Java crie automaticamente os getters. Ou, a anotação \textit{@Data} faz com que o Java crie automaticamente os getters, setters, equals, hashCode, toString e clone.
+
+\paragraph{\href{https://site.mockito.org/}{Mockito}\\}
+
+O \href{https://site.mockito.org/}{Mockito} é um framework auxiliar de testes, que é usado para gerir os mocks de objetos. Os mocks são objetos que são usados para simular o comportamento de objetos realmente existentes.
+
+Com os mocks, podemos testar objetos que ainda não existem, como um objeto de um repositório de dados, ou um objeto de um serviço. Como também isolamos o comportamento dos objetos, evitamos que os objetos sejam alterados durante o teste ou para testar apenas o comportamento do que comunica com o mesmo.
+
+\paragraph{\href{https://jdbc.postgresql.org/}{PostgreSQL}\\}
+
+O \href{https://jdbc.postgresql.org/}{PostgreSQL} é um driver JDBC, que é usado para conectar a bases de dados PostgreSQL. Um driver JDBC é um driver que permite ao Java a comunicação com bases de dados.
+
+PostgreSQL é o tipo de base de dados usado no projeto.
+
+\paragraph{\href{https://r2dbc.io/}{R2DBC}\\}
+
+O \href{https://r2dbc.io/}{R2DBC} é um driver de conexão à base de dados, mas contrariamente ao anterior este permite fazer transações reativas como as do Project Reactor ou do RxJava.
+
+\paragraph{\href{https://projectreactor.io/}{Reactor}\\}
+
+O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada em um fluxo de eventos.
+
+\subsection{Estrutura do Projeto}
+
+
 
 \subsection{Metodologia de desenvolvimento}
 
-\lipsum
+
 
 \subsection{Testes}
 
-\lipsum
+
 
 \subsection{Feedback}
 
-\lipsum
+
