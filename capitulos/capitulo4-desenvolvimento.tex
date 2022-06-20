@@ -1,4 +1,4 @@
-\chapter{Projeto}
+\chapter{Desenvolvimento do projeto}
 \label{cap4}
 
 Este capítulo descreve o projeto atribuído no estágio e o seu desenvolvimento. Sendo que este capítulo será o mais longo, mas consequentemente o mais importante e o mais complexo.
@@ -120,7 +120,7 @@ No meu caso em especifico foi-me fornecido um repositório privado no \href{http
 
 Esta diretoria de projeto nos atribuída, pessoalmente achei que era maior e mais complicada que o necessário, talvez esta seja única e o que varia são os projetos que a usam. Com isso em conta eu decidi, fazer uma redução ao projeto, para que ficasse mais simples de trabalhar e não houvessem pacotes ou funcionalidades que não fossem necessárias. Isto pode ser observado neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/commit/3c71d709599662436ae13cf9dcf609a5ca5464e3}{\textit{commit}} (o qual descrição reflete o meu estado mental sobre determinada observação).
 
-Após a redução, o projeto ficou com apenas dois subpacotes para o Gradle gerir, um que contem a aplicação em sí e o outro que trata dos repositórios/classes de transações à base de dados. O numero de pacotes externos e funcionalidades foi reduzido para o mínimo necessário, esses incluíram: \href{https://flywaydb.org/}{Flyway}, \href{http://fasterxml.com/}{Jackson}, \href{https://www.jooq.org/}{jOOQ}, \href{https://junit.org/junit5/}{JUnit}, \href{https://logback.qos.ch/}{Logback}, \href{https://projectlombok.org/}{Lombok}, \href{https://site.mockito.org/}{Mockito}, \href{https://jdbc.postgresql.org/}{Postgres}, \href{https://r2dbc.io/}{R2DBC} e \href{https://projectreactor.io/}{Reactor}.
+Após a redução, o projeto ficou com apenas dois subprojetos para o Gradle gerir, um que contem a aplicação em sí e o outro que trata dos repositórios/classes de transações à base de dados. O numero de pacotes externos e funcionalidades foi reduzido para o mínimo necessário, esses incluíram: \href{https://flywaydb.org/}{Flyway}, \href{http://fasterxml.com/}{Jackson}, \href{https://www.jooq.org/}{jOOQ}, \href{https://junit.org/junit5/}{JUnit}, \href{https://logback.qos.ch/}{Logback}, \href{https://projectlombok.org/}{Lombok}, \href{https://site.mockito.org/}{Mockito}, \href{https://jdbc.postgresql.org/}{Postgres}, \href{https://r2dbc.io/}{R2DBC} e \href{https://projectreactor.io/}{Reactor}.
 
 \newpage
 
@@ -182,16 +182,77 @@ O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é 
 
 \subsection{Estrutura do Projeto}
 
+A estrutura do projeto, como dito anteriormente, foi uma modificação do herdado da estrutura inicial vinda do repositório oferecido para \textit{forking}. Este projeto consitis de um projeto Gradle com três subprojetos: um pacote com classes entendidas de Monos, um pacote para o core do projeto, e um pacote para os repositórios que tratam das transações com a base de dados.
 
+Sendo que as classes eram apenas \textit{MonoVoid}, \textit{MonoFalse} e \textit{MonoTrue} que simplesmente implementavam a interface \textit{Mono} e retornavam um valor booleano (ou nenhum), decidi cortá-las visto que não trazem quais quer nova funcionalidade ao projeto e não me custa escrever \textit{Mono<Boolean>} e retornar um valor booleano.
+
+Com isto, a estrutura do projeto foi alterada para um projeto Gradle com dois subprojetos.
+
+\newpage
 
 \subsection{Metodologia de desenvolvimento}
 
+Foi-me notificado que o projeto seria desenvolvido de forma livre, sem qualquer metodologia de desenvolvimento. No entanto, sendo eu um alguém novo na area e a trabalhar remotamente, decidi que é extremamente importante arranjar um ambiente de desenvolvimento que me permita trabalhar, ponto. Por isto, decidi referir às estratégias de gestão de projeto ensinadas na disciplina de Engenharia de Software, como o \textit{Scrum} e o \textit{Kanban}.
 
+Sabendo que a empresa onde estou usa \textit{Scrum}, ponderei usar o mesmo e as ferramentas disponíveis no \href{https://www.atlassian.com/}{Atlassian} como \textit{Jira} e \textit{Confluence}; mas acabei por decidi usar uma estratégia menos rígida, o \textit{Kanban}.
+
+\subsubsection{Kanban}
+
+Para o meu projeto, a estratégia de desenvolvimento foi o \textit{Kanban}, ou pelo menos uma forma primitiva do mesmo. Expandindo, foi feito um quadro de tarefas divididas em cinco colunas: \textit{Tarefas}, \textit{Por aprender}, \textit{Por implementar} \textit{Por testar} e \textit{Terminadas}.
+
+A metodologia de trabalho começava por ir identificando tarefas, se muito complexas dividi-las em pequenas tarefas e julgando a minha capacidade de as fazer. Colocando na coluna respetiva e depois trabalhando de acordo com o estado do quadro.
+
+Este quadro infelizmente já não está acessível, pois a conta empresarial já foi fechada.
+
+\subsubsection{Nota sobre a escolha}
+
+Na minha opinião subjetiva, a escolha do \textit{Kanban} sobre \textit{Scrum}, foi uma boa decisão, visto que o \textit{Scrum} é um padrão mais rígido e linear, havendo a (extra) necessidade em criar \textit{user-stories} e em definir \textit{sprints}. Já o \textit{Kanban} é um padrão mais flexível, tanto por ter menos etapas para organizar como por ter um quadro de tarefas menos \textit{standard} e mais flexível.
 
 \subsection{Testes}
 
+Para testar o software, foi recomendado uma mistura de \textit{JUnit} e \textit{Mockito} ou usar \textit{Spock}. Estes testes foram feitos dentro do subprojeto principal, e foram divididos em duas partes:
 
+\begin{itemize}
+  \item \textit{Testes de unidade}
+  \item \textit{Testes de integração}
+\end{itemize}
 
-\subsection{Feedback}
+Houve também uma secção chamada \textit{shared}, onde havia um conjunto de classes que orientava o pacote do \textit{TestContainers} e o seu \textit{container} de teste \textit{PostgreSQL}.
 
+Noto que uma dos requerimentos do projeto era que um pacote do Gradle, chamado JaCoCo e que verifica a percentagem de código testado, fosse incluído no projeto e o resultado mínimo obtido fosse de 80\%. O que foi feito e entregue, com 82\% na entrega final e que houve uma altura que foi entregue com uns 100\% de coverage (na secção seguinte 4.3.6 saberão porquê), no então noto também que este relatório refere-se principalmente ao estado da entrega final.
 
+\subsubsection{Testes de unidade}
+
+Os testes de unidade são testes que testam uma unidade do software, isto quer dizer que testam algo em isolamento do resto do software. Este tipo de testes permitem verificar o correto funcionamento daquela especifica classe ou função, assim permitir identificar (ou excluir da procura) \textit{bugs} ou erros no software.
+
+Foram feitos testes de unidade para as classes dos modelos (os objetos com que comunicamos) e para as classes de serviços.
+
+\subsubsection{Testes de integração}
+
+Os testes de integração são testes que testam o funcionamento do software como um todo. Este tipo de testes permitem verificar o correto funcionamento do software ou permitir identificar se existe algum \textit{bug} no software, sabendo também se esse erro está na integração das unidades se em conjunto com testes de unidade sem testes falhados.
+
+Foi feita uma serie de testes de integração para a classe do \textit{controller}, que é responsável por receber os \textit{requests} à API e assim testando o funcionamento da API num todo.
+
+\subsection{\textit{Feedback}}
+
+O \textit{feedback} sobre o desenvolvido seria feito sob pedido via Slack ao responsável sobre os estagiários de backend, o André Figueira.
+
+De forma concreta eu obtive dois sets de \textit{feedbacks}:
+\begin{itemize}
+  \item \textit{Feedback} da primeira entrega
+  \item \textit{Feedback} da segunda entrega (final)
+\end{itemize}
+
+\subsubsection{\textit{Feedback} da primeira entrega}
+
+Este foi o \textit{Feedback} mais volumoso, que combinou comentário sobre \textit{Clean Code} e os conceitos \textit{SOLID}, comentário sobre os verbos dos métodos \textit{HTTP} e comentário sobre ler as inferências do \textit{.pdf} do projeto.
+
+Começando de trás para a frente, o primeiro comentário foi sobre os \textit{endpoints}. Ou seja, as ações que o software pode realizar, descritas no documento, inferem os endpoints que o software deve ter e não algo que apenas os satisfaça, lembrar o que foi dito no final da secção 4.2.
+
+Seguinte, os caminhos da URI, para os simplificar o mais possível, não precisam de conter os verbos das ações que fazem, visto que sendo ações CRUD, descritas facilmente com os métodos HTTP (GET, PUT, POST, DELETE), podem e devem ser cortados ao máximo. Exemplo: \texttt{\textbf{HTTP DELETE ->} http://localhost/remove/\{id\}} passar para \texttt{\textbf{HTTP DELETE ->} http://localhost/\{id\}}.
+
+Por último, e não menos importante, os conceitos \textit{SOLID} devem ser seguidos ao máximo independentemente do que achamos que vai ser o rumo do software. Isto porquê? Eu achei que visto que não iriam haver mais do que uma interface de comunicação com o software, sendo apenas necessário um \textit{controller} que serve a comunicação REST HTTP, não seria necessário uma outra classe com o \textit{business logic}, ou seja uma classe de serviço onde \textit{controllers} iriam buscar. Isto estava errado mesmo que a lógica sobre esta decisão não estivesse muito errada. O software deve separar o \textit{business logic} do \textit{controller} o mais possível e o software deve ser extensível.
+
+\subsubsection{\textit{Feedback} da segunda entrega (final)}
+
+O \textit{feedback} desta entrega foi muito mais simples, visto que todos os pontos anteriores foram corrigidos, o \textit{feedback} foi simplesmente que o software estava satisfatório com o que foi pedido se bem que a documentação poderia ter sido um pouco mais extensa.
