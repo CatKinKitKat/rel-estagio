@@ -1,2 +1,62 @@
-\chapter{Projeto desenvolvido}
-\label{cap5}
+\chapter{Projeto desenvolvido}\label{cap5}
+
+Este capitulo descreve em detalhe o funcionamento do projeto desenvolvido durante o decorrer do estágio.
+
+\section{Descrição geral}
+
+O \textit{Webshop Service Specification} é uma RESTful API reactiva, que consiste em gerir as especificações de Webshops, ou seja um microserviço reactivo. Este microserviço recebe pedidos HTTP e retorna uma resposta JSON com o resultado, nomeadamente uma Webshop ou uma caraterística da mesma.
+
+Sendo esta API reactiva, ela emprega o uso de \textit{threading} (divisão de tarefas em subprocessos) para poder executar variados pedidos em simultâneo, o mais depressa possível. No entanto esses processos concorrentes e assíncronos requerem um outro nível de cuidado e atenção no que toca à integridade e idempotência dos dados requeridos.
+
+As relações empregues por uma aplicação reactiva são os padrões de \textit{Publisher/Subscriber}, onde um pedido, ou uma transação, é uma mensagem enviada pela fonte desses dados, chamada de um \textit{Publisher} e a sua receção, ou seja onde os dados são consumidos, é encarregado pelo(s) \textit{Subscriber(s)}. Se um desses pedidos for uma mensagem com varias subscrições ao longo do tempo, devemos alterar o \textit{scheduling}, que gere as filas de processos e acessos.
+
+Com isto podemos dizer que os \textit{endpoints} desta API são \textit{Subscribers} e o serviço transacional que comunica diretamente com os dados da base de dados é o nosso \textit{Publisher}. Este tipo de acessos reactivos à base dados requer um outro tipo de mecanismo de processo de transações SQL, o qual deve ser também reactivo de modo a que a base de dados seja vista e funcione com um \textit{Publisher} e seja configurável a sua propagação.
+
+\newpage
+
+\section{Organização}
+
+Este projeto (como anteriormente mencionado), é um projeto Gradle que contem dois subprojetos, os quais gerem tarefas diferentes mas co-dependentes:
+
+\begin{itemize}
+  \item O pacote dos \hyperref[endp]{\textit{Endpoints}}: um pacote para o core do projeto, este contem a estrutura MC do projeto, com os respectivos modelos, controller e o serviço que comunica com os repositórios do pacote seguinte;
+  \item O pacote da \hyperref[infra]{\textit{Infrastructure}}: pacote para os repositórios que tratam das transações com a base de dados e as classes geradas do jOOQ que os repositórios utilizam.
+\end{itemize}
+
+Dentro da \textit{root directory} do projeto contemos variadas subdirectorias e ficheiros, dos quais podemos apontar:
+
+\begin{itemize}
+  \item \texttt{\textbf{build/ -> }} diretoria onde o Gradle gera os binários, os \textit{jars}, artefactos, etc... da tarefa de compilação;
+  \item \texttt{\textbf{endpoints/ -> }} \textit{source directory} do subprojeto \hyperref[endp]{\textit{Endpoints}};
+  \item \texttt{\textbf{gradle/ -> }} diretoria onde existem os \textit{wrappers} do Gradle;
+  \item \texttt{\textbf{infrastructure/ -> }} \textit{source directory} do subprojeto \hyperref[infra]{\textit{Infrastructure}};
+  \item \texttt{\textbf{javadoc/ -> }} diretoria onde se gera o JavaDoc, ou seja um documento/\textit{website} com a documentação (derivada dos \textit{block comments});
+  \item \texttt{\textbf{build.gradle -> }} ficheiro de configuração \textbf{principal} do Gradle, onde definimos os pacotes a ir buscar e programamamos as tarefas de (pré e pós) compilação e de testes;
+  \item \texttt{\textbf{gradle.properties -> }} ficheiro de configuração \textbf{opcional} do Gradle onde se definem \textit{compiler flags}, argumentos para a JVM e outras configurações mais profundas e especificas;
+  \item \texttt{\textbf{lombok.config -> }} ficheiro de configuração \textbf{opcional} do Lombok, onde aqui defino para adicionar a anotação \texttt{@Generated} as suas classes geradas para \textit{fugir} ao JaCoCo;
+  \item \texttt{\textbf{micronaut.config -> }}
+  \item \texttt{\textbf{postgres-compose.yml -> }} ficheiro de \textbf{docker-compose} para compor e lançar containers com pré configurações, neste caso um container de PostgreSQL;
+  \item \texttt{\textbf{settings.gradle -> }} ficheiro de configuração do Gradle onde se definem os subprojetos do projeto Gradle, é executado a cada \textit{build task}.
+\end{itemize}
+
+\newpage
+
+\subsection{\textit{\textit{Endpoints} package}}\label{endp}
+
+\subsection{\textit{\textit{Infrastructure} package}}\label{infra}
+
+\section{Funcionamento}
+
+\subsection{\textit{JSON Controller}}
+
+\subsection{\textit{Webshop Service}}
+
+\subsection{Modelos para comunicação}
+
+\subsection{Modelos Internos}
+
+\subsection{Repositórios}
+
+\subsubsection{\textit{WebshopRepository}}
+
+\subsubsection{\textit{WebshopemailsRepository}}

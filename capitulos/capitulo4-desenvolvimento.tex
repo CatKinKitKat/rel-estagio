@@ -1,5 +1,4 @@
-\chapter{Desenvolvimento do projeto}
-\label{cap4}
+\chapter{Desenvolvimento do projeto}\label{cap4}
 
 Este capítulo descreve o projeto atribuído no estágio e o seu desenvolvimento. Sendo que este capítulo será o mais longo, mas consequentemente o mais importante e o mais complexo.
 
@@ -44,9 +43,9 @@ Para isso temos de saber que cada Webshop têm um conjunto de especificações, 
   \item \textit{Contact Email List:} lista de emails de contacto da loja online, têm validação;
   \item \textbf{Extra:} \textit{Settings:} configurações da loja online:
         \begin{itemize}
-          \item Enable Multi Supplier: permite múltiplos fornecedores;
-          \item Enable Run Jobs: permite execução de tarefas;
-          \item Currency: moeda da loja online em ISO-4217;
+          \item \textit{Enable Multi Supplier:} permite múltiplos fornecedores;
+          \item \textit{Enable Run Jobs:} permite execução de tarefas;
+          \item \textit{Currency:} moeda da loja online em ISO-4217;
         \end{itemize}
 \end{itemize}
 
@@ -180,6 +179,28 @@ O \href{https://r2dbc.io/}{R2DBC} é um driver de conexão à base de dados, mas
 
 O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada em um fluxo de eventos.
 
+\subsection{Paradigma de Programação}
+
+Programação reativa é o acto de programar para trabalhar com fluxos de dados assíncronos. Isto é importante devido o crescimento da Internet e a demanda enorme de dados em tempo real. Esta programação precisa de ser dinâmica, ou seja; diferente das formas tradicionais de desenvolvimento.
+
+Nas formas tradicionais de programar/desenvolver, de modo \textbf{muito} genérico, cria-se variadas tarefas e elas comunicam-se em tempos pré-determinados, com respostas pré-determinadas, são ``rígidas'', seguem regras diretas.
+
+Isto funciona e continua a ser utilizada até hoje, entretanto esta ``lógica'' não é compatível com as necessidades de alguns serviços atuais e os seus inúmeros clientes e dados. Na programação reativa isto ocorre de uma forma semelhante, mas mais inteligente, interligada em paralelo, sem seguir uma ordem cronológica e linear.
+
+\newpage
+
+Os pilares da programação reativa são:
+
+\begin{itemize}
+  \item \textbf{Elástico:} Reage à demanda/carga: aplicações podem fazer uso de múltiplos núcleos e múltiplos servidores;
+  \item \textbf{Resiliente:} Reage às falhas; aplicações reagem e se recuperam de
+  falhas de software, hardware e de conectividade;
+  \item \textbf{Message Driven:} Reage aos eventos (event driven): em vez de compor
+  aplicações por múltiplas threads síncronas, sistemas são compostos de gerenciadores de eventos assíncronos e não bloqueantes;
+  \item \textbf{Responsivo:} Reage aos usuários: aplicações que oferecem interações
+  ricas e ``tempo real'' com usuários.
+\end{itemize}
+
 \subsection{Estrutura do Projeto}
 
 A estrutura do projeto, como dito anteriormente, foi uma modificação do herdado da estrutura inicial vinda do repositório oferecido para \textit{forking}. Este projeto consitis de um projeto Gradle com três subprojetos: um pacote com classes entendidas de Monos, um pacote para o core do projeto, e um pacote para os repositórios que tratam das transações com a base de dados.
@@ -188,13 +209,13 @@ Sendo que as classes eram apenas \textit{MonoVoid}, \textit{MonoFalse} e \textit
 
 Com isto, a estrutura do projeto foi alterada para um projeto Gradle com dois subprojetos.
 
-\newpage
-
 \subsection{Metodologia de desenvolvimento}
 
 Foi-me notificado que o projeto seria desenvolvido de forma livre, sem qualquer metodologia de desenvolvimento. No entanto, sendo eu um alguém novo na area e a trabalhar remotamente, decidi que é extremamente importante arranjar um ambiente de desenvolvimento que me permita trabalhar, ponto. Por isto, decidi referir às estratégias de gestão de projeto ensinadas na disciplina de Engenharia de Software, como o \textit{Scrum} e o \textit{Kanban}.
 
 Sabendo que a empresa onde estou usa \textit{Scrum}, ponderei usar o mesmo e as ferramentas disponíveis no \href{https://www.atlassian.com/}{Atlassian} como \textit{Jira} e \textit{Confluence}; mas acabei por decidi usar uma estratégia menos rígida, o \textit{Kanban}.
+
+\newpage
 
 \subsubsection{Kanban}
 
@@ -238,6 +259,7 @@ Foi feita uma serie de testes de integração para a classe do \textit{controlle
 O \textit{feedback} sobre o desenvolvido seria feito sob pedido via Slack ao responsável sobre os estagiários de backend, o André Figueira.
 
 De forma concreta eu obtive dois sets de \textit{feedbacks}:
+
 \begin{itemize}
   \item \textit{Feedback} da primeira entrega
   \item \textit{Feedback} da segunda entrega (final)
@@ -249,7 +271,9 @@ Este foi o \textit{Feedback} mais volumoso, que combinou comentário sobre \text
 
 Começando de trás para a frente, o primeiro comentário foi sobre os \textit{endpoints}. Ou seja, as ações que o software pode realizar, descritas no documento, inferem os endpoints que o software deve ter e não algo que apenas os satisfaça, lembrar o que foi dito no final da secção 4.2.
 
-Seguinte, os caminhos da URI, para os simplificar o mais possível, não precisam de conter os verbos das ações que fazem, visto que sendo ações CRUD, descritas facilmente com os métodos HTTP (GET, PUT, POST, DELETE), podem e devem ser cortados ao máximo. Exemplo: \texttt{\textbf{HTTP DELETE ->} http://localhost/remove/\{id\}} passar para \texttt{\textbf{HTTP DELETE ->} http://localhost/\{id\}}.
+Seguinte, os caminhos da URI, para os simplificar o mais possível, não precisam de conter os verbos das ações que fazem, visto que sendo ações CRUD, descritas facilmente com os métodos HTTP (GET, PUT, POST, DELETE), podem e devem ser cortados ao máximo.
+
+Exemplo: \texttt{\textbf{HTTP DELETE ->} http://localhost/remove/\{id\}} passar para\\\texttt{\textbf{HTTP DELETE ->} http://localhost/\{id\}}.
 
 Por último, e não menos importante, os conceitos \textit{SOLID} devem ser seguidos ao máximo independentemente do que achamos que vai ser o rumo do software. Isto porquê? Eu achei que visto que não iriam haver mais do que uma interface de comunicação com o software, sendo apenas necessário um \textit{controller} que serve a comunicação REST HTTP, não seria necessário uma outra classe com o \textit{business logic}, ou seja uma classe de serviço onde \textit{controllers} iriam buscar. Isto estava errado mesmo que a lógica sobre esta decisão não estivesse muito errada. O software deve separar o \textit{business logic} do \textit{controller} o mais possível e o software deve ser extensível.
 
