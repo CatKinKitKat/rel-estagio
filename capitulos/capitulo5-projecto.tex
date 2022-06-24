@@ -26,7 +26,7 @@ Este projeto (como anteriormente mencionado), é um projeto Gradle que contem do
 Dentro da \textit{root directory} do projeto contemos variadas subdirectorias e ficheiros, dos quais podemos apontar:
 
 \begin{itemize}
-  \item \texttt{\textbf{build/ -> }} diretoria onde o Gradle gera os binários, os \textit{jars}, artefactos, etc... da tarefa de compilação;
+  \item \texttt{\textbf{build/ -> }} diretoria onde o Gradle gera os binários, os \textit{jars}, artefactos, etc\ldots da tarefa de compilação;
   \item \texttt{\textbf{endpoints/ -> }} \textit{source directory} do subprojeto \hyperref[endp]{\textit{Endpoints}};
   \item \texttt{\textbf{gradle/ -> }} diretoria onde existem os \textit{wrappers} do Gradle;
   \item \texttt{\textbf{infrastructure/ -> }} \textit{source directory} do subprojeto \hyperref[infra]{\textit{Infrastructure}};
@@ -34,7 +34,7 @@ Dentro da \textit{root directory} do projeto contemos variadas subdirectorias e 
   \item \texttt{\textbf{build.gradle -> }} ficheiro de configuração \textbf{principal} do Gradle, onde definimos os pacotes a ir buscar e programamamos as tarefas de (pré e pós) compilação e de testes;
   \item \texttt{\textbf{gradle.properties -> }} ficheiro de configuração \textbf{opcional} do Gradle onde se definem \textit{compiler flags}, argumentos para a JVM e outras configurações mais profundas e especificas;
   \item \texttt{\textbf{lombok.config -> }} ficheiro de configuração \textbf{opcional} do Lombok, onde aqui defino para adicionar a anotação \texttt{@Generated} as suas classes geradas para \textit{fugir} ao JaCoCo;
-  \item \texttt{\textbf{micronaut.config -> }}
+  \item \texttt{\textbf{micronaut-cli.yml -> }} ficheiro de preferências da criação de um projeto Micronaut via a sua ferramenta CLI;
   \item \texttt{\textbf{postgres-compose.yml -> }} ficheiro de \textbf{docker-compose} para compor e lançar containers com pré configurações, neste caso um container de PostgreSQL;
   \item \texttt{\textbf{settings.gradle -> }} ficheiro de configuração do Gradle onde se definem os subprojetos do projeto Gradle, é executado a cada \textit{build task}.
 \end{itemize}
@@ -42,6 +42,107 @@ Dentro da \textit{root directory} do projeto contemos variadas subdirectorias e 
 \newpage
 
 \subsection{\textit{\textit{Endpoints} package}}\label{endp}
+
+Este é o subprojeto \textit{Endpoints} onde contêm toda a estrutura base da API, deste o ponto inicial da aplicação, às configurações, modelos, controladores e serviços. Tendo em conta que \texttt{com/optiply/endpoint/} fica como reticências, temos que:
+
+\begin{itemize}
+  \item \texttt{\textbf{src/main/}}\begin{itemize}
+          \item \texttt{\textbf{java/}}\begin{itemize}
+                  \item \texttt{\textbf{\ldots/config/}}\begin{itemize}
+                    \item \texttt{\textbf{DataSourceConfig.java}}
+                  \end{itemize}
+                  \item \texttt{\textbf{\ldots/controllers/}}\begin{itemize}
+                    \item \texttt{\textbf{shared/interfaces/IBaseController.java}}
+                    \item \texttt{\textbf{shared/BaseController.java}}
+                    \item \texttt{\textbf{JSONController.java}}
+                  \end{itemize}
+                  \item \texttt{\textbf{\ldots/models/}}\begin{itemize}
+                    \item \texttt{\textbf{EmailListModel.java}}
+                    \item \texttt{\textbf{HandleModel.java}}
+                    \item \texttt{\textbf{InterestRateModel.java}}
+                    \item \texttt{\textbf{ServiceLevelsModel.java}}
+                    \item \texttt{\textbf{SettingsModel.java}}
+                    \item \texttt{\textbf{UrlModel.java}}
+                    \item \texttt{\textbf{WebshopFullModel.java}}
+                    \item \texttt{\textbf{WebshopModel.java}}
+                    \item \texttt{\textbf{WebshopSettingsModel.java}}
+                  \end{itemize}
+                  \item \texttt{\textbf{\ldots/services/}}\begin{itemize}
+                    \item \texttt{\textbf{RepositoryService.java}}
+                  \end{itemize}
+                  \item \texttt{\textbf{\ldots/EndpointApplication.java}}
+                \end{itemize}
+          \item \texttt{\textbf{resources/}}\begin{itemize}
+                  \item \texttt{\textbf{db/migration/}}\begin{itemize}
+                          \item \texttt{\textbf{V1\_\_create\_initial\_schema.sql}}
+                        \end{itemize}
+                  \item \texttt{\textbf{application.yaml}}
+                  \item \texttt{\textbf{bootstrap.yaml}}
+                  \item \texttt{\textbf{logback.xml}}
+                \end{itemize}
+        \end{itemize}
+\end{itemize}
+
+\newpage
+
+\begin{itemize}
+  \item \texttt{\textbf{src/test/}}\begin{itemize}
+          \item \texttt{\textbf{java/}}\begin{itemize}
+                  \item \texttt{\textbf{integration/}}\begin{itemize}
+                          \item \texttt{\textbf{\ldots/controllers/JSONControllerIntegrationTests.java}}
+                        \end{itemize}
+                  \item \texttt{\textbf{shared/}}\begin{itemize}
+                          \item \texttt{\textbf{\ldots/container/TestContainer.java}}
+                          \item \texttt{\textbf{\ldots/environment/TestEnvironment.java}}
+                        \end{itemize}
+                  \item \texttt{\textbf{unit/}}\begin{itemize}
+                          \item \texttt{\textbf{\ldots/models/WebshopFullModelsUnitTests.java}}
+                          \item \texttt{\textbf{\ldots/services/RepositoryServiceUnitTests.java}}
+                        \end{itemize}
+                \end{itemize}
+          \item \texttt{\textbf{resources/}}\begin{itemize}
+                  \item \texttt{\textbf{application-test.yaml}}
+                \end{itemize}
+        \end{itemize}
+\end{itemize}
+
+Sendo que é clara a funcionalidade de cada classe pelo nome e pelo local onde se encontra. Mesmo sendo esse o caso, seguimos para uma explicação breve do que cada classe ou ficheiro faz, excluindo as classes de modelos, pois são obviamente modelos dos objetos transacionais (os corpos em JSON do \textit{request} HTTP) ou de suas partes.
+
+\subsubsection*{\texttt{DataSourceConfig.java}}
+
+Esta classe executa o carregamento e pós-configuração das configurações do ficheiro de configuração \texttt{application.yaml}, criando o contexto DSL (uma interface de comunicação do jOOQ com a base de dados via JDBC), e consequentemente cria a \textit{ConnectionFactory}, que permite usar R2DBC e fazer queries transacionais de forma reactiva.
+
+\subsubsection*{\texttt{JSONController.java}}
+
+Esta classe é um controlador de \textit{requests} HTTP com \textit{payloads} em JSON. Esta, extende a classe de controlador base \texttt{BaseController.java} (abstrata), que por si é uma implementação da interface \texttt{IBaseController.java}, que contem as funções der \textit{parsing} dos parâmetros de procura e sorteamento do \textit{endpoint} de pesquisa de Webshops.
+
+\subsubsection*{\texttt{RepositoryService.java}}
+
+Esta classe é responsável por deter toda a \textit{business logic} necessária e acessivel pelos \textit{controllers} e que os isola de contacto com os repositórios de dados. É aqui que se executam as tarefas que queremos executadas e recebemos os resultados quando usamos os \textit{endpoints} do \textit{controller}.
+
+\newpage
+
+\subsubsection*{\texttt{EndpointApplication.java}}
+
+Classe principal/base de onde executa a aplicação.
+
+\subsubsection*{\texttt{TestContainer.java} \textsuperscript{\textit{Testes}}}
+
+\subsubsection*{\texttt{TestEnvironment.java} \textsuperscript{\textit{Testes}}}
+
+\subsubsection*{\texttt{JSONControllerIntegrationTests.java} \textsuperscript{\textit{Testes}}}
+
+\subsubsection*{\texttt{WebshopFullModelsUnitTests.java} \textsuperscript{\textit{Testes}}}
+
+\subsubsection*{\texttt{RepositoryServiceUnitTests.java} \textsuperscript{\textit{Testes}}}
+
+\subsubsection*{\texttt{V1\_\_create\_initial\_schema.sql}}
+
+Ficheiro \texttt{.sql} com o esquema inicial da base de dados, onde o Gradle executa uma tarefa com o pacote FlyWay para fazer a migração. Esta base de dados contêm duas tabelas, uma com Webshops e as suas caraterísticas e outra para os emails de contacto das Webshops, relação de um-para-muitos.
+
+
+
+\newpage
 
 \subsection{\textit{\textit{Infrastructure} package}}\label{infra}
 
