@@ -62,7 +62,7 @@ Essa API tem um determinado conjunto de tarefas a cumprir as quais são:
           \item Só é necessário ordenar por um único campo. Os resultados devem ser consistentes com cada pedido. (Se ordenar por Taxa de Juros, como pode-se garantir que os mesmos resultados sejam obtidos em todos os pedidos?)
           \item Só é necessário filtrar por um único campo. Os filtros suportados são:
                 \begin{itemize}
-                  \item ``:'' significa \textit{Igual}. Exemplo: handle:optiply 
+                  \item ``:'' significa \textit{Igual}. Exemplo: handle:optiply
                   \item ``\%'' significa \textit{ILIKE} (semelhante, \textit{case-insensitive}).\\Exemplo: handle\%optiply
                   \item \textbf{Extra:} ``>'' significa \textit{Maior Que}. Exemplo: interestRate>20
                   \item \textbf{Extra:} ``<'' significa \textit{Menor Que}. Exemplo: interestRate<20
@@ -194,11 +194,11 @@ Os pilares da programação reativa são:
 \begin{itemize}
   \item \textbf{Elástico:} Reage à demanda/carga: aplicações podem fazer uso de múltiplos núcleos e múltiplos servidores;
   \item \textbf{Resiliente:} Reage às falhas; aplicações reagem e se recuperam de
-  falhas de software, hardware e de conectividade;
+        falhas de software, hardware e de conectividade;
   \item \textbf{Message Driven:} Reage aos eventos (event driven): em vez de compor
-  aplicações por múltiplas threads síncronas, sistemas são compostos de gerenciadores de eventos assíncronos e não bloqueantes;
+        aplicações por múltiplas threads síncronas, sistemas são compostos de gerenciadores de eventos assíncronos e não bloqueantes;
   \item \textbf{Responsivo:} Reage aos usuários: aplicações que oferecem interações
-  ricas e ``tempo real'' com usuários.
+        ricas e ``tempo real'' com usuários.
 \end{itemize}
 
 \subsection{Estrutura do Projeto}
