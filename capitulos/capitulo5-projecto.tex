@@ -19,10 +19,10 @@ Com isto podemos dizer que os \textit{endpoints} desta API são \textit{Subscrib
 Pegando na excelente descrição anterior, o funcionamento deste microserviço pode ser reduzido ao seguinte \textit{flowchart}:
 
 \begin{figure}[!hbt]
-  \centering
-  \includegraphics[width=14cm]{figuras/flowchart1.png}
-  \caption{\textit{Flowchart} do funcionamento do microserviço, criado no \href{https://gitmind.com/app/flowchart/ccd11723910}{GitMind}}
-  \label{fig:flow1}
+        \centering
+        \includegraphics[width=14cm]{figuras/flowchart1.png}
+        \caption{\textit{Flowchart} do funcionamento do microserviço, criado no \href{https://gitmind.com/app/flowchart/ccd11723910}{GitMind}}
+        \label{fig:flow1}
 \end{figure}
 \FloatBarrier
 
@@ -35,24 +35,24 @@ Cada um destes processos descritos no \textit{flowchart} (os quadrados), é um o
 Este projeto (como anteriormente mencionado), é um projeto Gradle que contem dois subprojetos, os quais gerem tarefas diferentes mas co-dependentes:
 
 \begin{itemize}
-  \item O pacote dos \hyperref[endp]{\textit{Endpoints}}: um pacote para o core do projeto, este contem a estrutura MC do projeto, com os respectivos modelos, controller e o serviço que comunica com os repositórios do pacote seguinte;
-  \item O pacote da \hyperref[infra]{\textit{Infrastructure}}: pacote para os repositórios que tratam das transações com a base de dados e as classes geradas do jOOQ que os repositórios utilizam.
+        \item O pacote dos \hyperref[endp]{\textit{Endpoints}}: um pacote para o core do projeto, este contem a estrutura MC do projeto, com os respectivos modelos, controller e o serviço que comunica com os repositórios do pacote seguinte;
+        \item O pacote da \hyperref[infra]{\textit{Infrastructure}}: pacote para os repositórios que tratam das transações com a base de dados e as classes geradas do jOOQ que os repositórios utilizam.
 \end{itemize}
 
 Dentro da \textit{root directory} do projeto contemos variadas subdirectorias e ficheiros, dos quais podemos apontar:
 
 \begin{itemize}
-  \item \texttt{\textbf{build/ -> }} diretoria onde o Gradle gera os binários, os \textit{jars}, artefactos, etc\ldots da tarefa de compilação;
-  \item \texttt{\textbf{endpoints/ -> }} \textit{source directory} do subprojeto \hyperref[endp]{\textit{Endpoints}};
-  \item \texttt{\textbf{gradle/ -> }} diretoria onde existem os \textit{wrappers} do Gradle;
-  \item \texttt{\textbf{infrastructure/ -> }} \textit{source directory} do subprojeto \hyperref[infra]{\textit{Infrastructure}};
-  \item \texttt{\textbf{javadoc/ -> }} diretoria onde se gera o JavaDoc, ou seja um documento/\textit{website} com a documentação (derivada dos \textit{block comments});
-  \item \texttt{\textbf{build.gradle -> }} ficheiro de configuração \textbf{principal} do Gradle, onde definimos os pacotes a ir buscar e programamamos as tarefas de (pré e pós) compilação e de testes;
-  \item \texttt{\textbf{gradle.properties -> }} ficheiro de configuração \textbf{opcional} do Gradle onde se definem \textit{compiler flags}, argumentos para a JVM e outras configurações mais profundas e especificas;
-  \item \texttt{\textbf{lombok.config -> }} ficheiro de configuração \textbf{opcional} do Lombok, onde aqui defino para adicionar a anotação \texttt{@Generated} as suas classes geradas para \textit{fugir} ao JaCoCo;
-  \item \texttt{\textbf{micronaut-cli.yml -> }} ficheiro de preferências da criação de um projeto Micronaut via a sua ferramenta CLI;
-  \item \texttt{\textbf{postgres-compose.yml -> }} ficheiro de \textbf{docker-compose} para compor e lançar containers com pré configurações, neste caso um container de PostgreSQL;
-  \item \texttt{\textbf{settings.gradle -> }} ficheiro de configuração do Gradle onde se definem os subprojetos do projeto Gradle, é executado a cada \textit{build task}.
+        \item \texttt{\textbf{build/ -> }} diretoria onde o Gradle gera os binários, os \textit{jars}, artefactos, etc\ldots da tarefa de compilação;
+        \item \texttt{\textbf{endpoints/ -> }} \textit{source directory} do subprojeto \hyperref[endp]{\textit{Endpoints}};
+        \item \texttt{\textbf{gradle/ -> }} diretoria onde existem os \textit{wrappers} do Gradle;
+        \item \texttt{\textbf{infrastructure/ -> }} \textit{source directory} do subprojeto \hyperref[infra]{\textit{Infrastructure}};
+        \item \texttt{\textbf{javadoc/ -> }} diretoria onde se gera o JavaDoc, ou seja um documento/\textit{website} com a documentação (derivada dos \textit{block comments});
+        \item \texttt{\textbf{build.gradle -> }} ficheiro de configuração \textbf{principal} do Gradle, onde definimos os pacotes a ir buscar e programamamos as tarefas de (pré e pós) compilação e de testes;
+        \item \texttt{\textbf{gradle.properties -> }} ficheiro de configuração \textbf{opcional} do Gradle onde se definem \textit{compiler flags}, argumentos para a JVM e outras configurações mais profundas e especificas;
+        \item \texttt{\textbf{lombok.config -> }} ficheiro de configuração \textbf{opcional} do Lombok, onde aqui defino para adicionar a anotação \texttt{@Generated} as suas classes geradas para \textit{fugir} ao JaCoCo;
+        \item \texttt{\textbf{micronaut-cli.yml -> }} ficheiro de preferências da criação de um projeto Micronaut via a sua ferramenta CLI;
+        \item \texttt{\textbf{postgres-compose.yml -> }} ficheiro de \textbf{docker-compose} para compor e lançar containers com pré configurações, neste caso um container de PostgreSQL;
+        \item \texttt{\textbf{settings.gradle -> }} ficheiro de configuração do Gradle onde se definem os subprojetos do projeto Gradle, é executado a cada \textit{build task}.
 \end{itemize}
 
 \newpage
@@ -62,64 +62,64 @@ Dentro da \textit{root directory} do projeto contemos variadas subdirectorias e 
 Este é o subprojeto \textit{Endpoints} onde contêm toda a estrutura base da API, deste o ponto inicial da aplicação, às configurações, modelos, controladores e serviços. Tendo em conta que \texttt{com/optiply/endpoint/} fica como reticências, temos que:
 
 \begin{itemize}
-  \item \texttt{\textbf{src/main/}}\begin{itemize}
-          \item \texttt{\textbf{java/}}\begin{itemize}
-                  \item \texttt{\textbf{\ldots/config/}}\begin{itemize}
-                          \item \texttt{\textbf{DataSourceConfig.java}}
-                        \end{itemize}
-                  \item \texttt{\textbf{\ldots/controllers/}}\begin{itemize}
-                          \item \texttt{\textbf{shared/interfaces/IBaseController.java}}
-                          \item \texttt{\textbf{shared/BaseController.java}}
-                          \item \texttt{\textbf{JSONController.java}}
-                        \end{itemize}
-                  \item \texttt{\textbf{\ldots/models/}}\begin{itemize}
-                          \item \texttt{\textbf{EmailListModel.java}}
-                          \item \texttt{\textbf{HandleModel.java}}
-                          \item \texttt{\textbf{InterestRateModel.java}}
-                          \item \texttt{\textbf{ServiceLevelsModel.java}}
-                          \item \texttt{\textbf{SettingsModel.java}}
-                          \item \texttt{\textbf{UrlModel.java}}
-                          \item \texttt{\textbf{WebshopFullModel.java}}
-                          \item \texttt{\textbf{WebshopModel.java}}
-                          \item \texttt{\textbf{WebshopSettingsModel.java}}
-                        \end{itemize}
-                  \item \texttt{\textbf{\ldots/services/}}\begin{itemize}
-                          \item \texttt{\textbf{RepositoryService.java}}
-                        \end{itemize}
-                  \item \texttt{\textbf{\ldots/EndpointApplication.java}}
-                \end{itemize}
-          \item \texttt{\textbf{resources/}}\begin{itemize}
-                  \item \texttt{\textbf{db/migration/}}\begin{itemize}
-                          \item \texttt{\textbf{V1\_\_create\_initial\_schema.sql}}
-                        \end{itemize}
-                  \item \texttt{\textbf{application.yaml}}
-                  \item \texttt{\textbf{bootstrap.yaml}}
-                  \item \texttt{\textbf{logback.xml}}
-                \end{itemize}
-        \end{itemize}
+        \item \texttt{\textbf{src/main/}}\begin{itemize}
+                      \item \texttt{\textbf{java/}}\begin{itemize}
+                                    \item \texttt{\textbf{\ldots/config/}}\begin{itemize}
+                                                  \item \texttt{\textbf{DataSourceConfig.java}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{\ldots/controllers/}}\begin{itemize}
+                                                  \item \texttt{\textbf{shared/interfaces/IBaseController.java}}
+                                                  \item \texttt{\textbf{shared/BaseController.java}}
+                                                  \item \texttt{\textbf{JSONController.java}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{\ldots/models/}}\begin{itemize}
+                                                  \item \texttt{\textbf{EmailListModel.java}}
+                                                  \item \texttt{\textbf{HandleModel.java}}
+                                                  \item \texttt{\textbf{InterestRateModel.java}}
+                                                  \item \texttt{\textbf{ServiceLevelsModel.java}}
+                                                  \item \texttt{\textbf{SettingsModel.java}}
+                                                  \item \texttt{\textbf{UrlModel.java}}
+                                                  \item \texttt{\textbf{WebshopFullModel.java}}
+                                                  \item \texttt{\textbf{WebshopModel.java}}
+                                                  \item \texttt{\textbf{WebshopSettingsModel.java}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{\ldots/services/}}\begin{itemize}
+                                                  \item \texttt{\textbf{RepositoryService.java}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{\ldots/EndpointApplication.java}}
+                            \end{itemize}
+                      \item \texttt{\textbf{resources/}}\begin{itemize}
+                                    \item \texttt{\textbf{db/migration/}}\begin{itemize}
+                                                  \item \texttt{\textbf{V1\_\_create\_initial\_schema.sql}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{application.yaml}}
+                                    \item \texttt{\textbf{bootstrap.yaml}}
+                                    \item \texttt{\textbf{logback.xml}}
+                            \end{itemize}
+              \end{itemize}
 \end{itemize}
 
 \newpage
 
 \begin{itemize}
-  \item \texttt{\textbf{src/test/}}\begin{itemize}
-          \item \texttt{\textbf{java/}}\begin{itemize}
-                  \item \texttt{\textbf{integration/}}\begin{itemize}
-                          \item \texttt{\textbf{\ldots/controllers/JSONControllerIntegrationTests.java}}
-                        \end{itemize}
-                  \item \texttt{\textbf{shared/}}\begin{itemize}
-                          \item \texttt{\textbf{\ldots/container/TestContainer.java}}
-                          \item \texttt{\textbf{\ldots/environment/TestEnvironment.java}}
-                        \end{itemize}
-                  \item \texttt{\textbf{unit/}}\begin{itemize}
-                          \item \texttt{\textbf{\ldots/models/WebshopFullModelsUnitTests.java}}
-                          \item \texttt{\textbf{\ldots/services/RepositoryServiceUnitTests.java}}
-                        \end{itemize}
-                \end{itemize}
-          \item \texttt{\textbf{resources/}}\begin{itemize}
-                  \item \texttt{\textbf{application-test.yaml}}
-                \end{itemize}
-        \end{itemize}
+        \item \texttt{\textbf{src/test/}}\begin{itemize}
+                      \item \texttt{\textbf{java/}}\begin{itemize}
+                                    \item \texttt{\textbf{integration/}}\begin{itemize}
+                                                  \item \texttt{\textbf{\ldots/controllers/JSONControllerIntegrationTests.java}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{shared/}}\begin{itemize}
+                                                  \item \texttt{\textbf{\ldots/container/TestContainer.java}}
+                                                  \item \texttt{\textbf{\ldots/environment/TestEnvironment.java}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{unit/}}\begin{itemize}
+                                                  \item \texttt{\textbf{\ldots/models/WebshopFullModelsUnitTests.java}}
+                                                  \item \texttt{\textbf{\ldots/services/RepositoryServiceUnitTests.java}}
+                                          \end{itemize}
+                            \end{itemize}
+                      \item \texttt{\textbf{resources/}}\begin{itemize}
+                                    \item \texttt{\textbf{application-test.yaml}}
+                            \end{itemize}
+              \end{itemize}
 \end{itemize}
 
 Sendo que é clara a funcionalidade de cada classe pelo nome e pelo local onde se encontra. Mesmo sendo esse o caso, seguimos para uma explicação breve do que cada classe ou ficheiro faz, excluindo as classes de modelos, pois são obviamente modelos dos objetos transacionais (os corpos em JSON do \textit{request} HTTP) ou de suas partes.
@@ -179,23 +179,23 @@ Ficheiro \texttt{.sql} com o esquema inicial da base de dados, onde o Gradle exe
 O subprojeto do \textit{Infrastructure} é onde toda a lógica de comunicação com a base de dados está instalada, desde as classes autogeradas do jOOQ aos repositórios, que são as classes que visam o isolamento e abstração das transações SQL com os que requerem que sejam executadas, nomeadamente o serviço no subprojeto anterior.
 
 \begin{itemize}
-  \item \texttt{\textbf{src/main/java/\ldots/data}}\begin{itemize}
-          \item \texttt{\textbf{repositories/}}\begin{itemize}
-                  \item \texttt{\textbf{interfaces/}}\begin{itemize}
-                          \item \texttt{\textbf{IWebshopemailsRepository.java}}
-                          \item \texttt{\textbf{IWebshopRepository.java}}
-                        \end{itemize}
-                  \item \texttt{\textbf{WebshopemailsRepository.java}}
-                  \item \texttt{\textbf{WebshopRepository.java}}
-                \end{itemize}
-          \item \texttt{\textbf{support/sql/}}\begin{itemize}
-                  \item \texttt{\textbf{QueryResult.java}}
-                \end{itemize}
-          \item \texttt{\textbf{package-info.java}}
-          \item \texttt{\textbf{resources/}}\begin{itemize}
-                  \item \texttt{\textbf{jooq\_schema.sql}}
-                \end{itemize}
-        \end{itemize}
+        \item \texttt{\textbf{src/main/java/\ldots/data}}\begin{itemize}
+                      \item \texttt{\textbf{repositories/}}\begin{itemize}
+                                    \item \texttt{\textbf{interfaces/}}\begin{itemize}
+                                                  \item \texttt{\textbf{IWebshopemailsRepository.java}}
+                                                  \item \texttt{\textbf{IWebshopRepository.java}}
+                                          \end{itemize}
+                                    \item \texttt{\textbf{WebshopemailsRepository.java}}
+                                    \item \texttt{\textbf{WebshopRepository.java}}
+                            \end{itemize}
+                      \item \texttt{\textbf{support/sql/}}\begin{itemize}
+                                    \item \texttt{\textbf{QueryResult.java}}
+                            \end{itemize}
+                      \item \texttt{\textbf{package-info.java}}
+                      \item \texttt{\textbf{resources/}}\begin{itemize}
+                                    \item \texttt{\textbf{jooq\_schema.sql}}
+                            \end{itemize}
+              \end{itemize}
 \end{itemize}
 
 Aqui contem artefactos peculiares, dos quais interfaces para cada Repositório, uma classe de Enums, um ficheiro SQL e um \textit{package-info}. Estes vãos ser seguidamente explicados, tal como no capitulo anterior.
@@ -208,7 +208,7 @@ Interface para implementação do repositório que faz as operações CRUD da ta
 
 \subsubsection*{\texttt{IWebshopemailsRepository.java}}
 
-Semelhante à anterior mas para a tabela de emails das Webshops. 
+Semelhante à anterior mas para a tabela de emails das Webshops.
 
 \subsubsection*{\texttt{WebshopRepository.java}}
 
@@ -238,7 +238,71 @@ Nesta seguinte secção vai ser vista em maior detalhe algumas classes e o seu f
 
 \subsection{\textit{JSON Controller}}
 
+Esta classe de controlador extende o controlador base que por sí é uma implementação do da seguinte interface:
+
+\begin{verbatim}
+/**
+ * Interface for a base controller.
+ */
+public interface IBaseController {
+        
+        /**
+         * Parse params and return a condition.
+         *
+         * @param params the params
+         * @return the condition
+         */
+        Condition parseParamsWebshop(String... params);
+        
+        /**
+         * Sort parser for the webshops.
+         *
+         * @param sort  the sort
+         * @param order the order
+         * @return the sort field
+         */
+        SortField<?> sortParserWebshop(String sort, String order);
+}
+\end{verbatim}
+
+Sendo que estes dois métodos são apenas precisos para a função de pesquisa, porém esta sendo um ponto crucial e também o mais importante do micro serviço, estará sempre como requerimento de qualquer possível implementação de um controlador, quer seja ele de \textit{requests} HTTP, gRPC ou quais quer outros.
+
+O \texttt{parseParamsWebshop} faz a gestão de toas as condições exposats na URL de pesquisa, tais como \textit{``nome igual a''}, \textit{``nome semelhante a''} ou \textit{``taxa de juro maior/menor que''}. Já a \texttt{sortParserWebshop} indica qual a ordem de chegada dos resultados, sendo que podem de forma ascendente ou descendente (numérica ou alfa-numericamente), ser ordenados por quais quer das suas colunas.
+
+As implementações desses métodos estão nos anexos \hyperref[an1]{um} e \hyperref[an2]{dois}. A classe implementação também Injeta dois objetos que qualquer classe extensa de esta base precisa: o acesso ao serviço e o \texttt{ObjectMapper} do Jackson.
+
+\begin{verbatim}
+ /**
+ * The repository service.
+ */
+@Inject
+public RepositoryService repositoryService;
+/**
+ * Jackson object mapper.
+ */
+@Inject
+public ObjectMapper objectMapper;
+\end{verbatim}
+
+Em suma, este controlador funciona da seguinte forma:
+
+\begin{table}[!hbt]
+        \centering
+        \begin{tabular}{ll}
+                \includegraphics[width=6cm]{figuras/flowchart2.png}
+                \label{fig:flow2} &
+                \includegraphics[width=7cm]{figuras/flowchart3.png}
+                \label{fig:flow3}   \\
+        \end{tabular}
+        \caption{\textit{Flowchart} do funcionamento geral do controlador, criado no \href{https://gitmind.com/app/flowchart/8d511739737}{GitMind}}
+\end{table}
+\FloatBarrier
+
+\newpage
+
 \subsection{\textit{Webshop Service}}
+
+
 
 \subsection{Modelos}
 

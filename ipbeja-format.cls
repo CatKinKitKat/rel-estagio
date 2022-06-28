@@ -31,6 +31,7 @@
 \usepackage{longtable}
 \usepackage{placeins}
 \usepackage{enumitem}
+\usepackage{verbatim}
 
 \setitemize{itemsep=0.25em}
 
