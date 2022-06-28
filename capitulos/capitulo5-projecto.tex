@@ -238,7 +238,7 @@ Nesta seguinte secção vai ser vista em maior detalhe algumas classes e o seu f
 
 \subsection{\textit{JSON Controller}}
 
-Esta classe de controlador extende o controlador base que por sí é uma implementação do da seguinte interface:
+Esta classe de controlador estende o controlador base que por sí é uma implementação do da seguinte interface:
 
 \begin{verbatim}
 /**
@@ -342,10 +342,36 @@ Mais exemplares encontram-se no anexo \hyperref[an3]{três}.
 
 \subsubsection*{Restantes modelos}
 
+\newpage
+
 \subsection{Repositórios}
 
-\subsubsection*{\texttt{WebshopRepository}}
+Estas classes lidam com as conceções e transações com a base de dados, as quais abstraem emfluxos do Project Reactor (Mono e Flux). Estas classes precisam de lidar de forma segura e com o menor conflito possivel com a base de dados, logo qualquer repositório que seja feito para as ações numa (e para só uma e exclusiva) tabela precisa de ser uma classe saída dos clássicos \textit{design patters}: um \textit{Singleton} ou um \textit{Monostate}.
 
-\subsubsection*{\texttt{WebshopemailsRepository}}
+Embora pessoalmente prefira usar o \textit{Monostate} pois este não quebra os conceitos \textit{Open/Closed Principle} e o \textit{Dependency Inversion Principle} do SOLID, é esperado e está preparado para ser usado \textit{Singletons} não só na framework, como também no ambiente de trabalho onde estive inserido. Como também que ao usar um \textit{Singleton} facilita para o propósito exclusivo desta classe.
+
+Este requerimento é facilmente subscrito com uma pequena anotação do Jackarta (incluída dentro da framework do Micronaut como dependência). A anotação \textit{@Singleton} automaticamente, abstrai o processo de fechar (ao ``público'') o construtor e a criação do método \textit{getter} da instância.
+
+Foram precisas usar duas classes, ou seja, dois repositórios. Isto porque a base de dados apenas tem duas tabelas, inicialmente ponderado três tabelas, mas para facilitar o desenvolvimento decidi colocar as \textit{settings} das Webshops na tabela principal. Podemos ver no seguinte gráfico a estrutura da base de dados:
+
+\begin{figure}[!hbt]
+        \centering
+        \includegraphics[width=15cm]{figuras/db.png}
+        \caption{Gráfico da estrutura da BD, criado no \href{https://gitmind.com/app/flowchart/51b11741757}{GitMind}}
+        \label{fig:db}
+\end{figure}
+\FloatBarrier
+
+Seguidamente vamos a uma introdução de cada uma das classes:
+\begin{itemize}
+        \item \hyperref[rep1]{\texttt{WebshopRepository}}
+        \item \hyperref[rep2]{\texttt{WebshopemailsRepository}}
+\end{itemize}
+
+\newpage
+
+\subsubsection*{\texttt{WebshopRepository}}\label{rep1}
+
+\subsubsection*{\texttt{WebshopemailsRepository}}\label{rep2}
 
 \newpage
