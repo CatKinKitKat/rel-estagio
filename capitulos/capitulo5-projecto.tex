@@ -302,11 +302,43 @@ Em suma, este controlador funciona da seguinte forma:
 
 \subsection{\textit{Webshop Service}}
 
+Esta classe têm como objetivo abstrair a lógica de negocio do controlador, assim sendo, esta implementa um método para cada endpoint que possa haver no controlador, em que cada um destes métodos é um fluxo de dados (\texttt{Mono} ou \texttt{Flux}), que direcione os dados obtidos num fluxo seguro e previsível desde os repositórios de dados à resposta possível que é enviada. Exemplo:
 
+\begin{verbatim}
+        /**
+         * Finds webshops via a conditionally defined
+         * query sorted by a defined sort field.
+         *
+         * @param condition the condition
+         * @param sortField the sort field
+         * @return the webshops
+         */
+        public Mono<MutableHttpResponse<List<WebshopModel>>>
+             getWebshops(Condition condition, SortField<?> sortField) {
+        
+         return webshopRepository.findVarious(condition, sortField)
+                     .flatMapSequential(this::getWebshopPriv)
+             .collectList().flatMap(webshops -> {
+               if (webshops.isEmpty()) {
+                 return Mono.empty();
+               }
+               return Mono.just(HttpResponse.ok(webshops));
+             }).switchIfEmpty(Mono.just(HttpResponse.notFound()))
+             .onErrorReturn(HttpResponse.serverError());
+        }
+\end{verbatim}
+
+Aqui, como podemos ver o método é apenas um conjunto de ações no retorno, não existe um momento de espera e como não existe mudança de \textit{schedulers}, o que vem por defeito é o \texttt{Schedulers.parallel()}. Ou seja, esta função funciona em paralelo, sem qualquer espera de dados de outros fluxos, o que vier, vem. Porém:
+
+O que esta faz é a execução da função de pesquisa, aciona a execução de um Fluxo \texttt{Flux} de múltiplos dados, com as condições e ordem no repositório, ao receber junta os dados sequencialmente para não perder a ordem: existe uma espera para verificação da ordem (dentro da função usada), e dependendo dos dados obtidos, a resposta ao cliente dada é diferente. Uma Lista vazia é trocada por um fluxo \texttt{Mono} vazio (sem Lista), para identificar e trocar como uma resposta \texttt{404 Not found}.
+
+Mais exemplares encontram-se no anexo \hyperref[an3]{três}.
+
+\newpage
 
 \subsection{Modelos}
 
-\subsubsection*{Modelos \textit{Webshop\ldots}}
+\subsubsection*{Modelos \textit{Webshop(\ldots)Model}}
 
 \subsubsection*{Restantes modelos}
 
