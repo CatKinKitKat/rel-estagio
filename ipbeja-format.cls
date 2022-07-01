@@ -243,7 +243,7 @@
 \DeclareRobustCommand{\apendices}{%
   \appendixpage%
   \appendix
-  \renewcommand{\thechapter}{\Roman{chapter}}%
+  \renewcommand{\thechapter}{\arabic{chapter}}%
 }
 
 \DeclareRobustCommand{\anexos}{%
@@ -258,7 +258,7 @@
 }
 
 \appendixpage
-\appendix \renewcommand{\thechapter}{\Roman{chapter}}
+\appendix \renewcommand{\thechapter}{\arabic{chapter}}
 }
 
 \addto\captionsportuges{%
