@@ -309,7 +309,7 @@ Tomemos atenção aos exemplares do \hyperref[an4]{anexo 4} e do \hyperref[an5]{
 
 O primeiro ponto é óbvio, sendo que estes objetos Têm obrigatoriamente valores por defeito e uma obrigatória e pré-determinada ordem e lógica organizacional para os poder serializar e desserializar (via Jackson).
 
-O segundo ponto é referente à verificação dos campos (ou atributos) pela sua ``correctividade'' \textit{(correctness)} e pela sua obrigatoriedade nas condições do projeto atribuído. Esta verificação necessita, como podemos ver, de uma anotação \texttt{@JsonIgnore} para forçar o Jackson a ignorar o método \texttt{isValid} que é publico e de certa forma um atributo (a validez do objeto criado). Estas validações são feitas atravé de métodos simples e fáceis de ler, logo podemos assumir que são eficazes, rápidas de executar e que está entendido o seu funcionamento.
+O segundo ponto é referente à verificação dos campos (ou atributos) pela sua ``correctividade'' \textit{(correctness)} e pela sua obrigatoriedade nas condições do projeto atribuído. Esta verificação necessita, como podemos ver, de uma anotação \texttt{@JsonIgnore} para forçar o Jackson a ignorar o método \texttt{isValid} que é publico e de certa forma um atributo (a validez do objeto criado). Estas validações são feitas através de métodos simples e fáceis de ler, logo podemos assumir que são eficazes, rápidas de executar e que está entendido o seu funcionamento.
 
 \newpage
 
@@ -321,7 +321,14 @@ Embora pessoalmente prefira usar o \textit{Monostate} pois este não quebra os c
 
 Este requerimento é facilmente subscrito com uma pequena anotação do Jackarta (incluída dentro da framework do Micronaut como dependência). A anotação \textit{@Singleton} automaticamente, abstrai o processo de fechar (ao ``público'') o construtor e a criação do método \textit{getter} da instância.
 
-Foram precisas usar duas classes, ou seja, dois repositórios. Isto porque a base de dados apenas tem duas tabelas, inicialmente ponderado três tabelas, mas para facilitar o desenvolvimento decidi colocar as \textit{settings} das Webshops na tabela principal. Podemos ver no seguinte gráfico a estrutura da base de dados:
+Foram precisas usar duas classes, ou seja, dois repositórios. Sendo estas:
+
+\begin{itemize}
+  \item \texttt{WebshopRepository} (disponível no \hyperref[an6]{anexo 6})
+  \item \texttt{WebshopemailsRepository} (disponível no \hyperref[an7]{anexo 7})
+\end{itemize}
+
+Isto porque a base de dados apenas tem duas tabelas, inicialmente ponderado três tabelas, mas para facilitar o desenvolvimento decidi colocar as \textit{settings} das Webshops na tabela principal. Podemos ver no seguinte gráfico a estrutura da base de dados:
 
 \begin{figure}[!hbt]
   \centering
@@ -331,16 +338,6 @@ Foram precisas usar duas classes, ou seja, dois repositórios. Isto porque a bas
 \end{figure}
 \FloatBarrier
 
-Seguidamente vamos a uma introdução de cada uma das classes:
-\begin{itemize}
-  \item \hyperref[rep1]{\texttt{WebshopRepository}}
-  \item \hyperref[rep2]{\texttt{WebshopemailsRepository}}
-\end{itemize}
-
-\newpage
-
-\subsubsection*{\texttt{WebshopRepository}}\label{rep1}
-
-\subsubsection*{\texttt{WebshopemailsRepository}}\label{rep2}
+Ou preferencialmente nas \textit{queries} SQL, disponíveis no \hyperref[an8]{anexo 8}.
 
 \newpage
