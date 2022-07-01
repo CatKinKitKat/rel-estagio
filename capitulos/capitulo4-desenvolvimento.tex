@@ -93,8 +93,6 @@ No entanto é estupidamente obscura a segunda intenção da lista, esta era a li
 
 O qual inicialmente não vendo uma lista de \textit{endpoints} explicita nem uma mera referência na reunião, a primeira iteração do trabalho usei os \textit{endpoints} que eu achava mais convenientes para o trabalho. Escusado será dizer, que tive de os refazer após a primeira receção de \textit{feedback}.
 
-\newpage
-
 \section{Implementação}
 
 \subsection{Pré-Requisitos}
@@ -117,11 +115,11 @@ No entanto ainda nos falta algo bastante importante. Nomeadamente, algo quer fa�
 
 No meu caso em especifico foi-me fornecido um repositório privado no \href{https://bitbucket.org/}{BitBucket}, o qual apenas me foi necessário fazer uma \textit{fork}. O estado desse repositório e da \textit{fork} pode ser visto no neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/tree/07d359ce933dde634f176dc95bf5ac1b3e4bc93d}{\textit{commit}} (\href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST}{num repositório meu} do \href{https://github.com/}{GitHub}, onde no projeto o adicionei como segunda origem, para backup).
 
-Esta diretoria de projeto nos atribuída, pessoalmente achei que era maior e mais complicada que o necessário, talvez esta seja única e o que varia são os projetos que a usam. Com isso em conta eu decidi, fazer uma redução ao projeto, para que ficasse mais simples de trabalhar e não houvessem pacotes ou funcionalidades que não fossem necessárias. Isto pode ser observado neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/commit/3c71d709599662436ae13cf9dcf609a5ca5464e3}{\textit{commit}} (o qual descrição reflete o meu estado mental sobre determinada observação).
+Esta diretoria de projeto nos atribuída, pessoalmente achei que era maior e mais complicada que o necessário, talvez esta seja única e o que varia são os projetos que a usam. Com isso em conta eu decidi, fazer uma redução ao projeto, para que ficasse mais simples de trabalhar e não houvessem pacotes ou funcionalidades que não fossem necessárias.
+
+Isto pode ser observado neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/commit/3c71d709599662436ae13cf9dcf609a5ca5464e3}{\textit{commit}} (o qual descrição reflete o meu estado mental sobre determinada observação).
 
 Após a redução, o projeto ficou com apenas dois subprojetos para o Gradle gerir, um que contem a aplicação em sí e o outro que trata dos repositórios/classes de transações à base de dados. O numero de pacotes externos e funcionalidades foi reduzido para o mínimo necessário, esses incluíram: \href{https://flywaydb.org/}{Flyway}, \href{http://fasterxml.com/}{Jackson}, \href{https://www.jooq.org/}{jOOQ}, \href{https://junit.org/junit5/}{JUnit}, \href{https://logback.qos.ch/}{Logback}, \href{https://projectlombok.org/}{Lombok}, \href{https://site.mockito.org/}{Mockito}, \href{https://jdbc.postgresql.org/}{Postgres}, \href{https://r2dbc.io/}{R2DBC} e \href{https://projectreactor.io/}{Reactor}.
-
-\newpage
 
 \subsubsection{Detalhes sobre as tecnologias}
 
@@ -183,11 +181,11 @@ O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é 
 
 Programação reativa é o acto de programar para trabalhar com fluxos de dados assíncronos. Isto é importante devido o crescimento da Internet e a demanda enorme de dados em tempo real. Esta programação precisa de ser dinâmica, ou seja; diferente das formas tradicionais de desenvolvimento.
 
+\newpage
+
 Nas formas tradicionais de programar/desenvolver, de modo \textbf{muito} genérico, cria-se variadas tarefas e elas comunicam-se em tempos pré-determinados, com respostas pré-determinadas, são ``rígidas'', seguem regras diretas.
 
 Isto funciona e continua a ser utilizada até hoje, entretanto esta ``lógica'' não é compatível com as necessidades de alguns serviços atuais e os seus inúmeros clientes e dados. Na programação reativa isto ocorre de uma forma semelhante, mas mais inteligente, interligada em paralelo, sem seguir uma ordem cronológica e linear.
-
-\newpage
 
 Os pilares da programação reativa são:
 
@@ -214,8 +212,6 @@ Com isto, a estrutura do projeto foi alterada para um projeto Gradle com dois su
 Foi-me notificado que o projeto seria desenvolvido de forma livre, sem qualquer metodologia de desenvolvimento. No entanto, sendo eu um alguém novo na area e a trabalhar remotamente, decidi que é extremamente importante arranjar um ambiente de desenvolvimento que me permita trabalhar, ponto. Por isto, decidi referir às estratégias de gestão de projeto ensinadas na disciplina de Engenharia de Software, como o \textit{Scrum} e o \textit{Kanban}.
 
 Sabendo que a empresa onde estou usa \textit{Scrum}, ponderei usar o mesmo e as ferramentas disponíveis no \href{https://www.atlassian.com/}{Atlassian} como \textit{Jira} e \textit{Confluence}; mas acabei por decidi usar uma estratégia menos rígida, o \textit{Kanban}.
-
-\newpage
 
 \subsubsection{Kanban}
 
