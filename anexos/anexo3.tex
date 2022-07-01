@@ -1,6 +1,6 @@
 \chapter{Implementação do \texttt{RepositoryService}}\label{an3}
 
-\begin{verbatim}
+\begin{lstlisting}[frame=bt,numbers=none]
 /**
  * Repository service (middleware to remove business logic from controller).
  */
@@ -356,4 +356,4 @@ public class RepositoryService {
 				.onErrorReturn(HttpResponse.serverError());
 	}
 }
-\end{verbatim}
+\end{lstlisting}

@@ -42,11 +42,11 @@ Para isso temos de saber que cada Webshop têm um conjunto de especificações, 
   \item \textit{Service Level Categories:} categorias de níveis de serviço que a loja têm, são três categorias (A,B e C) e as suas somas requerem ser iguais a 100\%;
   \item \textit{Contact Email List:} lista de emails de contacto da loja online, têm validação;
   \item \textbf{Extra:} \textit{Settings:} configurações da loja online:
-        \begin{itemize}
-          \item \textit{Enable Multi Supplier:} permite múltiplos fornecedores;
-          \item \textit{Enable Run Jobs:} permite execução de tarefas;
-          \item \textit{Currency:} moeda da loja online em ISO-4217;
-        \end{itemize}
+    \begin{itemize}
+      \item \textit{Enable Multi Supplier:} permite múltiplos fornecedores;
+      \item \textit{Enable Run Jobs:} permite execução de tarefas;
+      \item \textit{Currency:} moeda da loja online em ISO-4217;
+    \end{itemize}
 \end{itemize}
 
 Sendo que as ultimas especificações (as \textit{Settings}) são Extras, ou seja, não são obrigatórias, mas foram implementadas.
@@ -57,17 +57,17 @@ Essa API tem um determinado conjunto de tarefas a cumprir as quais são:
 \begin{itemize}
   \item Obter uma única Webshop;
   \item Obter várias Webshops:
+    \begin{itemize}
+      \item Deve ser capaz de ordenar e filtrar por qualquer campo da tabela;
+      \item Só é necessário ordenar por um único campo. Os resultados devem ser consistentes com cada pedido. (Se ordenar por Taxa de Juros, como pode-se garantir que os mesmos resultados sejam obtidos em todos os pedidos?)
+      \item Só é necessário filtrar por um único campo. Os filtros suportados são:
         \begin{itemize}
-          \item Deve ser capaz de ordenar e filtrar por qualquer campo da tabela;
-          \item Só é necessário ordenar por um único campo. Os resultados devem ser consistentes com cada pedido. (Se ordenar por Taxa de Juros, como pode-se garantir que os mesmos resultados sejam obtidos em todos os pedidos?)
-          \item Só é necessário filtrar por um único campo. Os filtros suportados são:
-                \begin{itemize}
-                  \item ``:'' significa \textit{Igual}. Exemplo: handle:optiply
-                  \item ``\%'' significa \textit{ILIKE} (semelhante, \textit{case-insensitive}).\\Exemplo: handle\%optiply
-                  \item \textbf{Extra:} ``>'' significa \textit{Maior Que}. Exemplo: interestRate>20
-                  \item \textbf{Extra:} ``<'' significa \textit{Menor Que}. Exemplo: interestRate<20
-                \end{itemize}
+          \item ``:'' significa \textit{Igual}. Exemplo: handle:optiply
+          \item ``\%'' significa \textit{ILIKE} (semelhante, \textit{case-insensitive}).\\Exemplo: handle\%optiply
+          \item \textbf{Extra:} ``>'' significa \textit{Maior Que}. Exemplo: interestRate>20
+          \item \textbf{Extra:} ``<'' significa \textit{Menor Que}. Exemplo: interestRate<20
         \end{itemize}
+    \end{itemize}
   \item Apagar uma única Webshop.
   \item Criar uma única Webshop.
   \item Atualizar qualquer campo da Webshop.
@@ -194,11 +194,11 @@ Os pilares da programação reativa são:
 \begin{itemize}
   \item \textbf{Elástico:} Reage à demanda/carga: aplicações podem fazer uso de múltiplos núcleos e múltiplos servidores;
   \item \textbf{Resiliente:} Reage às falhas; aplicações reagem e se recuperam de
-        falhas de software, hardware e de conectividade;
+    falhas de software, hardware e de conectividade;
   \item \textbf{Message Driven:} Reage aos eventos (event driven): em vez de compor
-        aplicações por múltiplas threads síncronas, sistemas são compostos de gerenciadores de eventos assíncronos e não bloqueantes;
+    aplicações por múltiplas threads síncronas, sistemas são compostos de gerenciadores de eventos assíncronos e não bloqueantes;
   \item \textbf{Responsivo:} Reage aos usuários: aplicações que oferecem interações
-        ricas e ``tempo real'' com usuários.
+    ricas e ``tempo real'' com usuários.
 \end{itemize}
 
 \subsection{Estrutura do Projeto}
