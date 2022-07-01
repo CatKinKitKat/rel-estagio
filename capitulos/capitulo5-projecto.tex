@@ -240,49 +240,14 @@ Nesta seguinte secção vai ser vista em maior detalhe algumas classes e o seu f
 
 Esta classe de controlador estende o controlador base que por sí é uma implementação do da seguinte interface:
 
-\begin{lstlisting}[frame=bt,numbers=none]
-/**
- * Interface for a base controller.
- */
-public interface IBaseController {
-    
-    /**
-     * Parse params and return a condition.
-     *
-     * @param params the params
-     * @return the condition
-     */
-    Condition parseParamsWebshop(String... params);
-    
-    /**
-     * Sort parser for the webshops.
-     *
-     * @param sort  the sort
-     * @param order the order
-     * @return the sort field
-     */
-    SortField<?> sortParserWebshop(String sort, String order);
-}
-\end{lstlisting}
+\lstinputlisting[frame=bt,language=java]{listagens/IBaseController.java}
 
 Sendo que estes dois métodos são apenas precisos para a função de pesquisa, porém esta sendo um ponto crucial e também o mais importante do micro serviço, estará sempre como requerimento de qualquer possível implementação de um controlador, quer seja ele de \textit{requests} HTTP, gRPC ou quais quer outros.
 
 O \texttt{parseParamsWebshop} faz a gestão de toas as condições exposats na URL de pesquisa, tais como \textit{``nome igual a''}, \textit{``nome semelhante a''} ou \textit{``taxa de juro maior/menor que''}. Já a \texttt{sortParserWebshop} indica qual a ordem de chegada dos resultados, sendo que podem de forma ascendente ou descendente (numérica ou alfa-numericamente), ser ordenados por quais quer das suas colunas.
 
 As implementações desses métodos estão nos anexos \hyperref[an1]{um} e \hyperref[an2]{dois}. A classe implementação também Injeta dois objetos que qualquer classe extensa de esta base precisa: o acesso ao serviço e o \texttt{ObjectMapper} do Jackson.
-
-\begin{lstlisting}[frame=bt,numbers=none]
- /**
- * The repository service.
- */
-@Inject
-public RepositoryService repositoryService;
-/**
- * Jackson object mapper.
- */
-@Inject
-public ObjectMapper objectMapper;
-\end{lstlisting}
+\lstinputlisting[frame=bt,language=java]{listagens/injected.java}
 
 Em suma, este controlador funciona da seguinte forma:
 
@@ -304,29 +269,7 @@ Em suma, este controlador funciona da seguinte forma:
 
 Esta classe têm como objetivo abstrair a lógica de negocio do controlador, assim sendo, esta implementa um método para cada endpoint que possa haver no controlador, em que cada um destes métodos é um fluxo de dados (\texttt{Mono} ou \texttt{Flux}), que direcione os dados obtidos num fluxo seguro e previsível desde os repositórios de dados à resposta possível que é enviada. Exemplo:
 
-\begin{lstlisting}[frame=bt,numbers=none]
-/**
- * Finds webshops via a conditionally defined
- * query sorted by a defined sort field.
- *
- * @param condition the condition
- * @param sortField the sort field
- * @return the webshops
- */
-public Mono<MutableHttpResponse<List<WebshopModel>>>
-    getWebshops(Condition condition, SortField<?> sortField) {
-
-    return webshopRepository.findVarious(condition, sortField)
-        .flatMapSequential(this::getWebshopPriv)
-        .collectList().flatMap(webshops -> {
-            if (webshops.isEmpty()) {
-            return Mono.empty();
-        }
-    return Mono.just(HttpResponse.ok(webshops));
-    }).switchIfEmpty(Mono.just(HttpResponse.notFound()))
-    .onErrorReturn(HttpResponse.serverError());
-}
-\end{lstlisting}
+\lstinputlisting[frame=bt,language=java]{listagens/getWebshops.java}
 
 Aqui, como podemos ver o método é apenas um conjunto de ações no retorno, não existe um momento de espera e como não existe mudança de \textit{schedulers}, o que vem por defeito é o \texttt{Schedulers.parallel()}. Ou seja, esta função funciona em paralelo, sem qualquer espera de dados de outros fluxos, o que vier, vem. Porém:
 
