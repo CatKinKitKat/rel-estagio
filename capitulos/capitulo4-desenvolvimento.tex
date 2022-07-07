@@ -4,11 +4,11 @@ Este capítulo descreve o projeto atribuído no estágio e o seu desenvolvimento
 
 \section{Introdução}
 
-Como anteriormente referido foi me destacada a tarefa de Implementação de um projeto no estágio. Este projeto consiste em um software que permite a gestão das especificações de Webshops.
+Como anteriormente referido foi destacada a tarefa de implementação de um projeto no estágio. Este projeto consiste em um software que permite a gestão das especificações de Webshops.
 
 Estas Webshops são, como o nome indica, as lojas online as quais são clientes da Optiply. Estas lojas online são responsáveis por fornecer os produtos que os clientes compram e a Optiply é responsável por fornecer a gestão inteligente dos produtos em stock.
 
-O trabalho foi recebido num \textit{.pdf}, numa reunião de video-conferencia, com o coordenador do estágio (Fábio Belga), o seu subordinado (André Figueira)que ficou encarregado de orientar os estagiários de Backend, e nós (eu, Gonçalo Amaro e o estagiário da universade de Évora, José Azevedo), após a nossa fase formativa do \textit{Onboarding} descrita no capítulo anterior.
+O trabalho foi recebido num \textit{.pdf}, numa reunião de video-conferencia, com o coordenador do estágio (Fábio Belga), o seu subordinado (André Figueira) que ficou encarregado de orientar os estagiários de Backend, e os mesmos (o autor deste relatório, Gonçalo Amaro e o estagiário da universade de Évora, José Azevedo), após a nossa fase formativa do \textit{Onboarding} descrita no capítulo anterior.
 
 Assim, as primeiras secções deste capítulo servem como uma apresentação do equivalente à minha introdução ao projeto.
 
@@ -87,23 +87,21 @@ Tendo sempre em conta que os resultados devem ser idempotentes e no seu estado m
   \item Qualquer outro erro interno deve retornar 500 (Erro Interno).
 \end{itemize}
 
-Esta lista (tradução do que está no \textit{.pdf} recebido, que está também no \hyperref[ap1]{Apêndice I}), é bastante extensa, mas é bastante simples para entender o que é.
+Esta lista  é bastante extensa, mas é bastante simples para entender o que é, no entanto é estupidamente obscura a segunda intenção da lista, esta era a lista implícita de \textit{endpoints} da API\@.
 
-No entanto é estupidamente obscura a segunda intenção da lista, esta era a lista implícita de \textit{endpoints} da API\@.
-
-O qual inicialmente não vendo uma lista de \textit{endpoints} explicita nem uma mera referência na reunião, a primeira iteração do trabalho usei os \textit{endpoints} que eu achava mais convenientes para o trabalho. Escusado será dizer, que tive de os refazer após a primeira receção de \textit{feedback}.
+O qual inicialmente não vendo uma lista de \textit{endpoints} explicita nem uma mera referência na reunião, a primeira iteração do trabalho foi usado os \textit{endpoints} que se achou mais convenientes para o trabalho. Com isto dizendo que foi necessário ter de os refazer após a primeira receção de \textit{feedback}.
 
 \section{Implementação}
 
 \subsection{Pré-Requisitos}
 
-Para começar a implementar a API, precisamos de um conjunto de ferramentas. Essas ferramentas passam por um JDK (um SDK de Java), otimamente algo aberto e conforme os standards de \href{https://openjdk.org/}{OpenJDK}, o qual usei \href{https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html}{Amazon Corretto}, visto à sua licença aberta e gratuita, multiplataforma e vem com suporte de longo prazo que incluirá melhorias de desempenho e correções de segurança.
+Para começar a implementar a API, precisa-se de um conjunto de ferramentas. Essas ferramentas passam por um JDK (um SDK de Java), otimamente algo aberto e conforme os standards de \href{https://openjdk.org/}{OpenJDK}, o qual usei \href{https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html}{Amazon Corretto}, visto à sua licença aberta e gratuita, multiplataforma e vem com suporte de longo prazo que incluirá melhorias de desempenho e correções de segurança.
 
-Para gestão de pacotes e tarefas, precisamos de um gestor de pacotes, o qual usei o \href{https://gradle.org/}{Gradle}, e como um dos meus computadores de trabalho usa \href{https://www.microsoft.com/pt-pt/software-download/windows10} em vez de \href{https://archlinux.org/download/}{Linux}, a instalação do \href{https://gradle.org/}{Gradle} sem um gestor de pacotes e alteração do path, dá-nos jeito usar um IDE que trate desses assuntos, o qual foi-me recomendado (e usado): \href{https://www.jetbrains.com/idea/}{IntelliJ IDEA} da \href{https://www.jetbrains.com/}{JetBrains}.
+Para gestão de pacotes e tarefas, precisa-se de um gestor de pacotes, o qual usei o \href{https://gradle.org/}{Gradle}, e como um dos meus computadores de trabalho usa \href{https://www.microsoft.com/pt-pt/software-download/windows10} em vez de \href{https://archlinux.org/download/}{Linux}, a instalação do \href{https://gradle.org/}{Gradle} sem um gestor de pacotes e alteração do path, dá-nos jeito usar um IDE que trate desses assuntos, o qual foi-me recomendado (e usado): \href{https://www.jetbrains.com/idea/}{IntelliJ IDEA} da \href{https://www.jetbrains.com/}{JetBrains}.
 
 Para hospedar a base de dados e o projeto, numa pequena rede de containers interna, foi instalado o \href{https://www.docker.com/}{Docker} no \textit{desktop} \href{https://www.microsoft.com/pt-pt/software-download/windows10}{Windows} (e usado o \href{https://podman.io/}{Podman} no portátil \href{https://archlinux.org/download/}{Linux}, pelo simplesmente facto de já o ter instalado previamente).
 
-No entanto ainda nos falta algo bastante importante. Nomeadamente, algo quer faça o Bootstrap do projeto em \href{https://micronaut.io/}{Micronaut}, para isso temos variadas opções:
+No entanto ainda falta algo bastante importante. Nomeadamente, algo que faça o Bootstrap do projeto em \href{https://micronaut.io/}{Micronaut}, para isso temos variadas opções:
 
 \begin{itemize}
   \item Ir ao o \href{https://micronaut.io/launch}{Micronaut Launch Website}
@@ -111,13 +109,15 @@ No entanto ainda nos falta algo bastante importante. Nomeadamente, algo quer fa�
   \item Fazer \href{https://curl.se/}{curl} à API do \href{https://micronaut.io/}{Micronaut} Launch \href{https://launch.micronaut.io/create/default/com.optiply.project.webshop?lang=JAVA&build=GRADLE&test=JUNIT&javaVersion=JDK_17&features=jackson-databind&features=kubernetes-reactor-client&features=properties&features=flyway&features=jdbc-hikari&features=jooq&features=postgres&features=r2dbc&features=testcontainers&features=lombok&features=mockito&features=openrewrite&features=asciidoctor&features=logback&features=reactor&features=security-jwt&features=problem-json&features=jackson-xml}{https://launch.micronaut.io/create/default}
 \end{itemize}
 
+O qual nenhum foi necessário pela razão estabelecidade na subsecção imediatamente seguinte.
+
 \subsection{Inicio do Projeto}
 
-No meu caso em especifico foi-me fornecido um repositório privado no \href{https://bitbucket.org/}{BitBucket}, o qual apenas me foi necessário fazer uma \textit{fork}. O estado desse repositório e da \textit{fork} pode ser visto no neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/tree/07d359ce933dde634f176dc95bf5ac1b3e4bc93d}{\textit{commit}} (\href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST}{num repositório meu} do \href{https://github.com/}{GitHub}, onde no projeto o adicionei como segunda origem, para backup).
+Neste caso em especifico foi fornecido um repositório privado no \href{https://bitbucket.org/}{BitBucket}, o qual apenas foi necessário fazer uma \textit{fork}. O estado desse repositório e da \textit{fork} pode ser visto no neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/tree/07d359ce933dde634f176dc95bf5ac1b3e4bc93d}{\textit{commit}} (\href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST}{num repositório do autor} do \href{https://github.com/}{GitHub}, onde no projeto foi adicionado como segunda origem, para backup).
 
-Esta diretoria de projeto nos atribuída, pessoalmente achei que era maior e mais complicada que o necessário, talvez esta seja única e o que varia são os projetos que a usam. Com isso em conta eu decidi, fazer uma redução ao projeto, para que ficasse mais simples de trabalhar e não houvessem pacotes ou funcionalidades que não fossem necessárias.
+Nesta diretoria de projeto nos atribuída, foi calculada que era maior e mais complicada que o necessário, talvez esta seja única e o que varia são os projetos que a usam. Com isso em conta foi decido, fazer uma redução ao projeto, para que ficasse mais simples de trabalhar e não houvessem pacotes ou funcionalidades que não fossem necessárias.
 
-Isto pode ser observado neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/commit/3c71d709599662436ae13cf9dcf609a5ca5464e3}{\textit{commit}} (o qual descrição reflete o meu estado mental sobre determinada observação).
+Isto pode ser observado neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/commit/3c71d709599662436ae13cf9dcf609a5ca5464e3}{\textit{commit}} (o qual descrição reflete determinada observação).
 
 Após a redução, o projeto ficou com apenas dois subprojetos para o Gradle gerir, um que contem a aplicação em sí e o outro que trata dos repositórios/classes de transações à base de dados. O numero de pacotes externos e funcionalidades foi reduzido para o mínimo necessário, esses incluíram: \href{https://flywaydb.org/}{Flyway}, \href{http://fasterxml.com/}{Jackson}, \href{https://www.jooq.org/}{jOOQ}, \href{https://junit.org/junit5/}{JUnit}, \href{https://logback.qos.ch/}{Logback}, \href{https://projectlombok.org/}{Lombok}, \href{https://site.mockito.org/}{Mockito}, \href{https://jdbc.postgresql.org/}{Postgres}, \href{https://r2dbc.io/}{R2DBC} e \href{https://projectreactor.io/}{Reactor}.
 
@@ -125,13 +125,13 @@ Após a redução, o projeto ficou com apenas dois subprojetos para o Gradle ger
 
 \paragraph{\href{https://flywaydb.org/}{Flyway}\\}
 
-O \href{https://flywaydb.org/}{Flyway} é um framework de migrações de bases de dados, que é usado para gerênciar as migrações de bases de dados de projetos Java. Funciona de maneira semelhante às migrações nativas do ASP.NET Core.
+O \href{https://flywaydb.org/}{Flyway} é um framework de migrações de bases de dados, que é usado para gerênciar as migrações de bases de dados de projetos Java. Funciona de maneira semelhante às migrações nativas do ASP.NET Core. \cite{flyway}
 
 Este pacote adiciona essas capacidades a tarefas do Gradle, como o \textit{flywayMigrate} e \textit{flywayInfo}. A migrações são feitas através de um ficheiro de migrações, que é um ficheiro de SQL, dentro da diretoria de migrações (\textit{PROJECT\_ROOT/src/main/resources/db/migrations}), com a versão em que a migração deve ser executada e dois \textit{underscores}.
 
 \paragraph{\href{http://fasterxml.com/}{Jackson}\\}
 
-O \href{http://fasterxml.com/}{Jackson} é um framework de serialização de objetos, que é usado para serializar objetos em JSON.
+O \href{http://fasterxml.com/}{Jackson} é um framework de serialização de objetos, que é usado para serializar objetos em JSON. \cite{jackson}
 
 A serialização é um processo de transformação de um objeto em um JSON, e a deserialização é o processo de transformação de um JSON em um objeto.
 
@@ -139,47 +139,47 @@ Isto é feito principalmente através de um objeto \textit{ObjectMapper}, que é
 
 \paragraph{\href{https://jooq.org/}{jOOQ}\\}
 
-O \href{https://jooq.org/}{jOOQ} é um framework de código-fonte de código-aberto, que é usado para gerir a base de dados. Este funciona de maneira semelhante às operações do Entity Framework Core para ASP.NET Core, sendo que este abstrai as operações de SQL em wrappers programáticos.
+O \href{https://jooq.org/}{jOOQ} é um framework de código-fonte de código-aberto, que é usado para gerir a base de dados. Este funciona de maneira semelhante às operações do Entity Framework Core para ASP.NET Core, sendo que este abstrai as operações de SQL em wrappers programáticos. \cite{jooq}
 
 \paragraph{\href{https://junit.org/junit5/}{JUnit}\\}
 
-O \href{https://junit.org/junit5/}{JUnit} é um framework de testes, que é usado para gerênciar os testes de unidades. Usado muito na disciplina de Programação Orientada a Objetos.
+O \href{https://junit.org/junit5/}{JUnit} é um framework de testes, que é usado para gerênciar os testes de unidades. Usado muito na disciplina de Programação Orientada a Objetos. \cite{junit}
 
 \paragraph{\href{https://logback.qos.ch/}{Logback}\\}
 
-O \href{https://logback.qos.ch/}{Logback} é um framework de logging, que é usado para gerir os logs de um projeto, com o foco em abstrair o uso de logs ao mais simples possível. É o sucessor do \href{https://log4j.org/}{Log4j}, que foi alvo de uma vulnerabilidade recentemente.
+O \href{https://logback.qos.ch/}{Logback} é um framework de logging, que é usado para gerir os logs de um projeto, com o foco em abstrair o uso de logs ao mais simples possível. É o sucessor do \href{https://log4j.org/}{Log4j}, que foi alvo de uma vulnerabilidade recentemente. \cite{logback}
 
 No Windows devemos alterar uma configuração: a desativação do JANSI, que não funciona com alguns Locales, em especial os que o Windows usa.
 
 \paragraph{\href{https://projectlombok.org/}{Lombok}\\}
 
-O \href{https://projectlombok.org/}{Lombok} é um framework de código-fonte de código-aberto, que é usado para gerir a criação de classes de objetos através de anotações. Com estas anotações, abstraímos o código, evitamos repetição e automatizamos muito o processo desenvolvimento.
+O \href{https://projectlombok.org/}{Lombok} é um framework de código-fonte de código-aberto, que é usado para gerir a criação de classes de objetos através de anotações. Com estas anotações, abstraímos o código, evitamos repetição e automatizamos muito o processo desenvolvimento. \cite{lombok}
 
 Por exemplo a anotação \textit{@Getter} faz com que o Java crie automaticamente os getters. Ou, a anotação \textit{@Data} faz com que o Java crie automaticamente os getters, setters, equals, hashCode, toString e clone.
 
 \paragraph{\href{https://site.mockito.org/}{Mockito}\\}
 
-O \href{https://site.mockito.org/}{Mockito} é um framework auxiliar de testes, que é usado para gerir os mocks de objetos. Os mocks são objetos que são usados para simular o comportamento de objetos realmente existentes.
+O \href{https://site.mockito.org/}{Mockito} é um framework auxiliar de testes, que é usado para gerir os mocks de objetos. Os mocks são objetos que são usados para simular o comportamento de objetos realmente existentes. \cite{mockito}
 
 Com os mocks, podemos testar objetos que ainda não existem, como um objeto de um repositório de dados, ou um objeto de um serviço. Como também isolamos o comportamento dos objetos, evitamos que os objetos sejam alterados durante o teste ou para testar apenas o comportamento do que comunica com o mesmo.
 
 \paragraph{\href{https://jdbc.postgresql.org/}{PostgreSQL}\\}
 
-O \href{https://jdbc.postgresql.org/}{PostgreSQL} é um driver JDBC, que é usado para conectar a bases de dados PostgreSQL. Um driver JDBC é um driver que permite ao Java a comunicação com bases de dados.
+O \href{https://jdbc.postgresql.org/}{PostgreSQL} é um driver JDBC, que é usado para conectar a bases de dados PostgreSQL. Um driver JDBC é um driver que permite ao Java a comunicação com bases de dados. \cite{postgresql}
 
 PostgreSQL é o tipo de base de dados usado no projeto.
 
 \paragraph{\href{https://r2dbc.io/}{R2DBC}\\}
 
-O \href{https://r2dbc.io/}{R2DBC} é um driver de conexão à base de dados, mas contrariamente ao anterior este permite fazer transações reativas como as do Project Reactor ou do RxJava.
+O \href{https://r2dbc.io/}{R2DBC} é um driver de conexão à base de dados, mas contrariamente ao anterior este permite fazer transações reativas como as do Project Reactor ou do RxJava. \cite{r2dbc}
 
 \paragraph{\href{https://projectreactor.io/}{Reactor}\\}
 
-O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada em um fluxo de eventos.
+O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada em um fluxo de eventos. \cite{reactor}
 
 \subsection{Paradigma de Programação}
 
-Programação reativa é o acto de programar para trabalhar com fluxos de dados assíncronos. Isto é importante devido o crescimento da Internet e a demanda enorme de dados em tempo real. Esta programação precisa de ser dinâmica, ou seja; diferente das formas tradicionais de desenvolvimento.
+Programação reativa é o acto de programar para trabalhar com fluxos de dados assíncronos. Isto é importante devido o crescimento da Internet e a demanda enorme de dados em tempo real. Esta programação precisa de ser dinâmica, ou seja; diferente das formas tradicionais de desenvolvimento. \cite{reactive}
 
 \newpage
 
@@ -201,7 +201,7 @@ Os pilares da programação reativa são:
 
 \subsection{Estrutura do Projeto}
 
-A estrutura do projeto, como dito anteriormente, foi uma modificação do herdado da estrutura inicial vinda do repositório oferecido para \textit{forking}. Este projeto consitis de um projeto Gradle com três subprojetos: um pacote com classes entendidas de Monos, um pacote para o core do projeto, e um pacote para os repositórios que tratam das transações com a base de dados.
+A estrutura do projeto, como dito anteriormente, foi uma modificação do herdado da estrutura inicial vinda do repositório oferecido para \textit{forking}. Este projeto consistiu num projeto Gradle com três subprojetos: um pacote com classes entendidas de Monos, um pacote para o core do projeto, e um pacote para os repositórios que tratam das transações com a base de dados.
 
 Sendo que as classes eram apenas \textit{MonoVoid}, \textit{MonoFalse} e \textit{MonoTrue} que simplesmente implementavam a interface \textit{Mono} e retornavam um valor booleano (ou nenhum), decidi cortá-las visto que não trazem quais quer nova funcionalidade ao projeto e não me custa escrever \textit{Mono<Boolean>} e retornar um valor booleano.
 
@@ -209,21 +209,21 @@ Com isto, a estrutura do projeto foi alterada para um projeto Gradle com dois su
 
 \subsection{Metodologia de desenvolvimento}
 
-Foi-me notificado que o projeto seria desenvolvido de forma livre, sem qualquer metodologia de desenvolvimento. No entanto, sendo eu um alguém novo na area e a trabalhar remotamente, decidi que é extremamente importante arranjar um ambiente de desenvolvimento que me permita trabalhar, ponto. Por isto, decidi referir às estratégias de gestão de projeto ensinadas na disciplina de Engenharia de Software, como o \textit{Scrum} e o \textit{Kanban}.
+Foi notificado que o projeto seria desenvolvido de forma livre, sem qualquer metodologia de desenvolvimento. No entanto, sendo eu um alguém novo na area e a trabalhar remotamente, decidi que é extremamente importante arranjar um ambiente de desenvolvimento que me permita trabalhar, ponto. Por isto, decidi referir às estratégias de gestão de projeto ensinadas na disciplina de Engenharia de Software, como o \textit{Scrum} e o \textit{Kanban}.
 
-Sabendo que a empresa onde estou usa \textit{Scrum}, ponderei usar o mesmo e as ferramentas disponíveis no \href{https://www.atlassian.com/}{Atlassian} como \textit{Jira} e \textit{Confluence}; mas acabei por decidi usar uma estratégia menos rígida, o \textit{Kanban}.
+Sabendo que esta empresa usa \textit{Scrum}, ponderou-se usar o mesmo e as ferramentas disponíveis no \href{https://www.atlassian.com/}{Atlassian} como \textit{Jira} e \textit{Confluence}; mas acabou por ser decidido usar uma estratégia menos rígida, o \textit{Kanban}.
 
 \subsubsection{Kanban}
 
-Para o meu projeto, a estratégia de desenvolvimento foi o \textit{Kanban}, ou pelo menos uma forma primitiva do mesmo. Expandindo, foi feito um quadro de tarefas divididas em cinco colunas: \textit{Tarefas}, \textit{Por aprender}, \textit{Por implementar} \textit{Por testar} e \textit{Terminadas}.
+Para o projeto, a estratégia de desenvolvimento foi o \textit{Kanban}, ou pelo menos uma forma primitiva do mesmo. Expandindo, foi feito um quadro de tarefas divididas em cinco colunas: \textit{Tarefas}, \textit{Por aprender}, \textit{Por implementar} \textit{Por testar} e \textit{Terminadas}.
 
 A metodologia de trabalho começava por ir identificando tarefas, se muito complexas dividi-las em pequenas tarefas e julgando a minha capacidade de as fazer. Colocando na coluna respetiva e depois trabalhando de acordo com o estado do quadro.
 
-Este quadro infelizmente já não está acessível, pois a conta empresarial já foi fechada.
+Este quadro infelizmente já não está acessível, pois a conta empresarial já foi fechada e não houve \textit{backup}.
 
 \subsubsection{Nota sobre a escolha}
 
-Na minha opinião subjetiva, a escolha do \textit{Kanban} sobre \textit{Scrum}, foi uma boa decisão, visto que o \textit{Scrum} é um padrão mais rígido e linear, havendo a (extra) necessidade em criar \textit{user-stories} e em definir \textit{sprints}. Já o \textit{Kanban} é um padrão mais flexível, tanto por ter menos etapas para organizar como por ter um quadro de tarefas menos \textit{standard} e mais flexível.
+Numa opinião subjetiva, a escolha do \textit{Kanban} sobre \textit{Scrum}, foi uma boa decisão, visto que o \textit{Scrum} é um padrão mais rígido e linear, havendo a (extra) necessidade em criar \textit{user-stories} e em definir \textit{sprints}. Já o \textit{Kanban} é um padrão mais flexível, tanto por ter menos etapas para organizar como por ter um quadro de tarefas menos \textit{standard} e mais flexível.
 
 \subsection{Testes}
 
@@ -236,7 +236,7 @@ Para testar o software, foi recomendado uma mistura de \textit{JUnit} e \textit{
 
 Houve também uma secção chamada \textit{shared}, onde havia um conjunto de classes que orientava o pacote do \textit{TestContainers} e o seu \textit{container} de teste \textit{PostgreSQL}.
 
-Noto que uma dos requerimentos do projeto era que um pacote do Gradle, chamado JaCoCo e que verifica a percentagem de código testado, fosse incluído no projeto e o resultado mínimo obtido fosse de 80\%. O que foi feito e entregue, com 82\% na entrega final e que houve uma altura que foi entregue com uns 100\% de coverage (na secção seguinte 4.3.6 saberão porquê), no então noto também que este relatório refere-se principalmente ao estado da entrega final.
+Notando que um dos requerimentos do projeto era que um pacote do Gradle, chamado JaCoCo e que este verifica a percentagem de código testado, fosse incluído no projeto e o resultado mínimo obtido fosse de 80\%. O que foi feito e entregue, com 82\% na entrega final e que houve uma altura que foi entregue com uns 100\% de coverage (na secção seguinte 4.3.6 detalha-se o porquê), no então noto também que este relatório refere-se principalmente ao estado da entrega final.
 
 \subsubsection{Testes de unidade}
 
@@ -265,13 +265,13 @@ De forma concreta eu obtive dois sets de \textit{feedbacks}:
 
 Este foi o \textit{Feedback} mais volumoso, que combinou comentário sobre \textit{Clean Code} e os conceitos \textit{SOLID}, comentário sobre os verbos dos métodos \textit{HTTP} e comentário sobre ler as inferências do \textit{.pdf} do projeto.
 
-Começando de trás para a frente, o primeiro comentário foi sobre os \textit{endpoints}. Ou seja, as ações que o software pode realizar, descritas no documento, inferem os endpoints que o software deve ter e não algo que apenas os satisfaça, lembrar o que foi dito no final da secção 4.2.
+Começando de trás para a frente, o primeiro comentário foi sobre os \textit{endpoints}. Ou seja, as ações que o software pode realizar, descritas no documento, inferem os endpoints que o software deve ter e não algo que apenas os satisfaça, referindo o que foi dito no final da secção 4.2.
 
 Seguinte, os caminhos da URI, para os simplificar o mais possível, não precisam de conter os verbos das ações que fazem, visto que sendo ações CRUD, descritas facilmente com os métodos HTTP (GET, PUT, POST, DELETE), podem e devem ser cortados ao máximo.
 
 Exemplo: \texttt{\textbf{HTTP DELETE ->} http://localhost/remove/\{id\}} passar para\\\texttt{\textbf{HTTP DELETE ->} http://localhost/\{id\}}.
 
-Por último, e não menos importante, os conceitos \textit{SOLID} devem ser seguidos ao máximo independentemente do que achamos que vai ser o rumo do software. Isto porquê? Eu achei que visto que não iriam haver mais do que uma interface de comunicação com o software, sendo apenas necessário um \textit{controller} que serve a comunicação REST HTTP, não seria necessário uma outra classe com o \textit{business logic}, ou seja uma classe de serviço onde \textit{controllers} iriam buscar. Isto estava errado mesmo que a lógica sobre esta decisão não estivesse muito errada. O software deve separar o \textit{business logic} do \textit{controller} o mais possível e o software deve ser extensível.
+Por último, e não menos importante, os conceitos \textit{SOLID} devem ser seguidos ao máximo independentemente do que achamos que vai ser o rumo do software. Isto porquê? Foi pensado que visto que não iriam haver mais do que uma interface de comunicação com o software, sendo apenas necessário um \textit{controller} que serve a comunicação REST HTTP, não seria necessário uma outra classe com o \textit{business logic}, ou seja uma classe de serviço onde \textit{controllers} iriam buscar. Isto estava errado mesmo que a lógica sobre esta decisão não estivesse muito errada. O software deve separar o \textit{business logic} do \textit{controller} o mais possível e o software deve ser extensível.
 
 \subsubsection{\textit{Feedback} da segunda entrega (final)}
 
