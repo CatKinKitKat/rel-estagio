@@ -34,7 +34,7 @@
 
 \setitemize{itemsep=0.25em}
 
-\pt-en{\RequirePackage[portuges]{babel} }
+\pt-en{\RequirePackage[portuguese]{babel} }
 {\RequirePackage[english]{babel}}
 %hifens de quebra de linha ‡ portuguesa
 \defineshorthand{"-}{\nobreak\hskip0pt\discretionary{-}{-}{-}\nobreak\hskip0pt}
@@ -47,13 +47,12 @@
 \usepackage[
   backref=true,
   backend=biber,
-  %style=apa,
-  style=alphabetic,
-  %citestyle=alphabetic
+  %style=ieee,
+  citestyle=numeric
 ]{biblatex}
 
 \pt-en{
-\DefineBibliographyStrings{portuges}{%
+\DefineBibliographyStrings{portuguese}{%
   backrefpage = {citado na página},% originally "cited on page"
   backrefpages = {citado nas páginas},% originally "cited on pages"
 }
@@ -197,42 +196,42 @@
 }
 
 \pt-en{
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
 \renewcommand{\lstlistlistingname}%
 {\'{I}ndice de Listagens}%
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
   \renewcommand{\lstlistingname}%
   {Listagem}%
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
 \renewcommand{\contentsname}%
 {\'{I}ndice}%
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
 \renewcommand{\listfigurename}%
 {\'{I}ndice de Figuras}%
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
 \renewcommand{\listtablename}%
 {\'{I}ndice de Tabelas}%
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
   \renewcommand{\appendixpagename}%
   {Apêndices}%
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
   \renewcommand{\appendixname}%
   {Apêndice}%
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
   \renewcommand{\appendixtocname}%
   {Apêndices}%
 }
@@ -261,7 +260,7 @@
 \appendix \renewcommand{\thechapter}{\arabic{chapter}}
 }
 
-\addto\captionsportuges{%
+\addto\captionsportuguese{%
 \renewcommand{\bibname}%
    {Referências bibliográficas}%
 }
