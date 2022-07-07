@@ -125,13 +125,13 @@ Após a redução, o projeto ficou com apenas dois subprojetos para o Gradle ger
 
 \paragraph{\href{https://flywaydb.org/}{Flyway}\\}
 
-O \href{https://flywaydb.org/}{Flyway} é um framework de migrações de bases de dados, que é usado para gerênciar as migrações de bases de dados de projetos Java. Funciona de maneira semelhante às migrações nativas do ASP.NET Core. \cite{flyway}
+O \href{https://flywaydb.org/}{Flyway} é um framework de migrações de bases de dados, que é usado para gerênciar as migrações de bases de dados de projetos Java. Funciona de maneira semelhante às migrações nativas do ASP.NET Core.\cite{flyway}
 
 Este pacote adiciona essas capacidades a tarefas do Gradle, como o \textit{flywayMigrate} e \textit{flywayInfo}. A migrações são feitas através de um ficheiro de migrações, que é um ficheiro de SQL, dentro da diretoria de migrações (\textit{PROJECT\_ROOT/src/main/resources/db/migrations}), com a versão em que a migração deve ser executada e dois \textit{underscores}.
 
 \paragraph{\href{http://fasterxml.com/}{Jackson}\\}
 
-O \href{http://fasterxml.com/}{Jackson} é um framework de serialização de objetos, que é usado para serializar objetos em JSON. \cite{jackson}
+O \href{http://fasterxml.com/}{Jackson} é um framework de serialização de objetos, que é usado para serializar objetos em JSON.\cite{jackson}
 
 A serialização é um processo de transformação de um objeto em um JSON, e a deserialização é o processo de transformação de um JSON em um objeto.
 
@@ -139,47 +139,47 @@ Isto é feito principalmente através de um objeto \textit{ObjectMapper}, que é
 
 \paragraph{\href{https://jooq.org/}{jOOQ}\\}
 
-O \href{https://jooq.org/}{jOOQ} é um framework de código-fonte de código-aberto, que é usado para gerir a base de dados. Este funciona de maneira semelhante às operações do Entity Framework Core para ASP.NET Core, sendo que este abstrai as operações de SQL em wrappers programáticos. \cite{jooq}
+O \href{https://jooq.org/}{jOOQ} é um framework de código-fonte de código-aberto, que é usado para gerir a base de dados. Este funciona de maneira semelhante às operações do Entity Framework Core para ASP.NET Core, sendo que este abstrai as operações de SQL em wrappers programáticos.\cite{jooq}
 
 \paragraph{\href{https://junit.org/junit5/}{JUnit}\\}
 
-O \href{https://junit.org/junit5/}{JUnit} é um framework de testes, que é usado para gerênciar os testes de unidades. Usado muito na disciplina de Programação Orientada a Objetos. \cite{junit}
+O \href{https://junit.org/junit5/}{JUnit} é um framework de testes, que é usado para gerênciar os testes de unidades. Usado muito na disciplina de Programação Orientada a Objetos.\cite{junit}
 
 \paragraph{\href{https://logback.qos.ch/}{Logback}\\}
 
-O \href{https://logback.qos.ch/}{Logback} é um framework de logging, que é usado para gerir os logs de um projeto, com o foco em abstrair o uso de logs ao mais simples possível. É o sucessor do \href{https://log4j.org/}{Log4j}, que foi alvo de uma vulnerabilidade recentemente. \cite{logback}
+O \href{https://logback.qos.ch/}{Logback} é um framework de logging, que é usado para gerir os logs de um projeto, com o foco em abstrair o uso de logs ao mais simples possível. É o sucessor do \href{https://log4j.org/}{Log4j}, que foi alvo de uma vulnerabilidade recentemente.\cite{logback}
 
 No Windows devemos alterar uma configuração: a desativação do JANSI, que não funciona com alguns Locales, em especial os que o Windows usa.
 
 \paragraph{\href{https://projectlombok.org/}{Lombok}\\}
 
-O \href{https://projectlombok.org/}{Lombok} é um framework de código-fonte de código-aberto, que é usado para gerir a criação de classes de objetos através de anotações. Com estas anotações, abstraímos o código, evitamos repetição e automatizamos muito o processo desenvolvimento. \cite{lombok}
+O \href{https://projectlombok.org/}{Lombok} é um framework de código-fonte de código-aberto, que é usado para gerir a criação de classes de objetos através de anotações. Com estas anotações, abstraímos o código, evitamos repetição e automatizamos muito o processo desenvolvimento.\cite{lombok}
 
 Por exemplo a anotação \textit{@Getter} faz com que o Java crie automaticamente os getters. Ou, a anotação \textit{@Data} faz com que o Java crie automaticamente os getters, setters, equals, hashCode, toString e clone.
 
 \paragraph{\href{https://site.mockito.org/}{Mockito}\\}
 
-O \href{https://site.mockito.org/}{Mockito} é um framework auxiliar de testes, que é usado para gerir os mocks de objetos. Os mocks são objetos que são usados para simular o comportamento de objetos realmente existentes. \cite{mockito}
+O \href{https://site.mockito.org/}{Mockito} é um framework auxiliar de testes, que é usado para gerir os mocks de objetos. Os mocks são objetos que são usados para simular o comportamento de objetos realmente existentes.\cite{mockito}
 
 Com os mocks, podemos testar objetos que ainda não existem, como um objeto de um repositório de dados, ou um objeto de um serviço. Como também isolamos o comportamento dos objetos, evitamos que os objetos sejam alterados durante o teste ou para testar apenas o comportamento do que comunica com o mesmo.
 
 \paragraph{\href{https://jdbc.postgresql.org/}{PostgreSQL}\\}
 
-O \href{https://jdbc.postgresql.org/}{PostgreSQL} é um driver JDBC, que é usado para conectar a bases de dados PostgreSQL. Um driver JDBC é um driver que permite ao Java a comunicação com bases de dados. \cite{postgresql}
+O \href{https://jdbc.postgresql.org/}{PostgreSQL} é um driver JDBC, que é usado para conectar a bases de dados PostgreSQL. Um driver JDBC é um driver que permite ao Java a comunicação com bases de dados.\cite{postgresql}
 
 PostgreSQL é o tipo de base de dados usado no projeto.
 
 \paragraph{\href{https://r2dbc.io/}{R2DBC}\\}
 
-O \href{https://r2dbc.io/}{R2DBC} é um driver de conexão à base de dados, mas contrariamente ao anterior este permite fazer transações reativas como as do Project Reactor ou do RxJava. \cite{r2dbc}
+O \href{https://r2dbc.io/}{R2DBC} é um driver de conexão à base de dados, mas contrariamente ao anterior este permite fazer transações reativas como as do Project Reactor ou do RxJava.\cite{r2dbc}
 
 \paragraph{\href{https://projectreactor.io/}{Reactor}\\}
 
-O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada em um fluxo de eventos. \cite{reactor}
+O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada em um fluxo de eventos.\cite{reactor}
 
 \subsection{Paradigma de Programação}
 
-Programação reativa é o acto de programar para trabalhar com fluxos de dados assíncronos. Isto é importante devido o crescimento da Internet e a demanda enorme de dados em tempo real. Esta programação precisa de ser dinâmica, ou seja; diferente das formas tradicionais de desenvolvimento. \cite{reactive}
+Programação reativa é o acto de programar para trabalhar com fluxos de dados assíncronos. Isto é importante devido o crescimento da Internet e a demanda enorme de dados em tempo real. Esta programação precisa de ser dinâmica, ou seja; diferente das formas tradicionais de desenvolvimento.\cite{reactive}
 
 \newpage
 
