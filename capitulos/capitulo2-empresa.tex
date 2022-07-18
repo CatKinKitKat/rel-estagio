@@ -1,5 +1,11 @@
 \chapter{A Empresa}\label{cap2}
 
+A empresa que hospedou o estágio referido foi a \href{https://optiply.nl/}{Optiply}, durante três meses, para uma posição de aprendizagem de desenvolvimento de backend.
+
+\section{Caracterização}
+
+A \href{https://optiply.nl/}{Optiply} é uma empresa de desenvolvimento de software cujo produto/serviço é a gestão inteligente de \textit{stocks} dos produtos e serviços de lojas online\cite{optiply} (logótipo na \hyperref[fig:logo]{\textbf{Figura 2.1}}). Esta empresa foi fundada em 2015 em Amesterdão, Países Baixos e que depressa (em 2017), expandiu a sua equipa de desenvolvido de software para Évora, Portugal.
+
 \begin{figure}[!hbt]
   \centering
   \includegraphics[width=12cm]{figuras/optiply_logo.jpg}
@@ -8,29 +14,23 @@
 \end{figure}
 \FloatBarrier
 
-A empresa que hospedou o estágio referido foi a \href{https://optiply.nl/}{Optiply}, durante três meses, para uma posição de aprendizagem de desenvolvimento de backend.
-
-\section{Caracterização}
-
-A \href{https://optiply.nl/}{Optiply} é uma empresa de software cujo produto/serviço é a gestão inteligente de \textit{stocks} dos produtos e serviços de lojas online.\cite{optiply} Esta empresa foi fundada em 2015 em Amesterdão, Países Baixos e que depressa (em 2017), expandiu a sua equipa de desenvolvido de software para Évora, Portugal.
-
-Em Évora, esta empresa detém por volta de 20 empregados, dos quais três quartos são engenheiros de software, distribuídos em frontend, backend e integrações.
+Em Évora, esta empresa detém por volta de 20 colaboradores, dos quais três quartos são engenheiros de software, distribuídos por frontend, backend e integrações.
 
 \section{Produto}
 
-Como referido brevemente na secção anterior esta é uma empresa de SaaS, ou seja um software vendido como um serviço, o uso deste software está associado a uma subscrição que oferece os serviços promovidos. Mais especificamente são serviços de inteligência artificial que fazem sugestões automáticas de compras e promoções para o cliente, facilitando a gestão dos stocks do seu armazém.
+Como podemos inferir pela secção anterior esta é uma empresa de SaaS, ou seja um software vendido como um serviço. A utilização deste software está associado a uma subscrição que oferece os serviços promovidos. Mais especificamente são serviços de inteligência artificial que fazem sugestões automáticas de compras e promoções para o cliente, facilitando a gestão dos stocks do seu armazém.
 
 \newpage
 
 \section{Organização e Comunicação}
 
-Apesar da empresa deter instalações e equipamentos, esta suporta trabalho remoto, o qual me pareceu ser a escolha da maioria dos empregados que estão em desenvolvimento de software, eu incluso. O qual para a Comunicação da empresa, inter e entre empregados era essencialmente via Slack, com canais de comunicação gerais, divididos em equipas, e comunicação privada. Evitava-se ao máximo o uso de video chamadas, e ao invés de isso, usava-se mensagem de texto, à exceção do \textit{Tech Lead/Team Leader} que usava mensagem de texto e video chamada para coordenar as equipas locais e estrangeiras.
+Apesar da empresa deter instalações e equipamentos, esta suporta trabalho remoto, o qual me pareceu ser a escolha da maioria dos empregados que estão em desenvolvimento de software. Neste contexto, a comunicação da empresa entre colaboradores é feita essencialmente via Slack, com canais de comunicação gerais, divididos em equipas, e comunicação privada. Evita-se o uso de video chamadas, sendo preferencial usar mensagens de texto, com a exceção do \textit{Tech Lead/Team Leader} que usa mensagens de texto e video chamadas para coordenar as equipas locais e estrangeiras.
 
-Para a gestão dos projetos, esta é uma empresa \href{https://www.atlassian.com/agile}{\textit{Agile}}, o qual obviamente usa a suite da \href{https://www.atlassian.com/}{Atlassian}, nomeadamente o \href{https://bitbucket.org/}{BitBucket} para hospedar os repositórios de software, bibliotecas e frameworks, como também, o \href{https://jira.atlassian.com/}{Jira}.
+Para a gestão dos projetos, esta é uma empresa \href{https://www.atlassian.com/agile}{\textit{Agile}}, o qual usa a suite da \href{https://www.atlassian.com/}{Atlassian}, nomeadamente o \href{https://bitbucket.org/}{BitBucket} para hospedar os repositórios de software, bibliotecas e frameworks, como também, o \href{https://jira.atlassian.com/}{Jira}.
 
 \section{\textit{Tech Stack}}
 
-O serviço oferecido pela empresa foi desenvolvido por um conjunto de tecnologias, dos quais do tempo em que estive ativo consegui identificar que se usa a framework de Javascript: \href{https://angular.io/}{Angular} para a construção do front-end o qual pode ser acedido num browser ou empacotado numa aplicação \href{https://www.electronjs.org/}{Electron}, a qual comunica com um servidor, possivelmente Linux e \textit{\href{https://www.debian.org/}{Debian}-based}. Este servidor detêm variados containers \href{https://www.docker.com/}{Docker}, os quais são a infraestrutura vital do backend do serviço, hospedando as bases de dados \href{https://www.postgresql.org/}{PostgreSQL} e \href{https://www.mongodb.com/}{MongoDB}, e os \textit{microservices}, implementados nas frameworks de \href{https://jdk.java.net/}{Java}: \href{https://micronaut.io/}{Micronaut} (as mais recentes) e \href{https://spring.io/}{Spring}.
+O serviço oferecido pela empresa foi desenvolvido por um conjunto de tecnologias, dos quais do tempo em que estive ativo consegui identificar que se usa a framework de Javascript: \href{https://angular.io/}{Angular} para a construção do front-end o qual pode ser acedido num browser ou empacotado numa aplicação \href{https://www.electronjs.org/}{Electron}, a qual comunica com um servidor, possivelmente Linux e \textit{\href{https://www.debian.org/}{Debian}-based}. Este servidor detêm variados containers \href{https://www.docker.com/}{Docker}, os quais são a infraestrutura vital do backend do serviço, hospedando as bases de dados \href{https://www.postgresql.org/}{PostgreSQL} e \href{https://www.mongodb.com/}{MongoDB}, e os \textit{microservices}, implementados nas frameworks de \href{https://jdk.java.net/}{Java}: \href{https://micronaut.io/}{Micronaut} (as mais recentes) e \href{https://spring.io/}{Spring}. A \textbf{Figura 2.2} ilustra o serviço oferecido.
 
 \begin{figure}[!hbt]
   \centering

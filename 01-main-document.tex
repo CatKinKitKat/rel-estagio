@@ -1,7 +1,7 @@
-% !TeX program = LuaLaTeX
-% !TeX encoding = UTF-8
-% !TeX spellcheck = pt_PT
-% !TeX hyphenation = pt_PT
+% !TeX program=LuaLaTeX
+% !TeX encoding=UTF-8
+% !TeX spellcheck=pt_PT
+% !TeX hyphenation=pt_PT
 
 % Latex style for final reports and dissertations (Instituto Politécnico de Beja)
 % Version 0.8.1, 2021/10/01
@@ -14,8 +14,16 @@
 %\documentclass[]{ipbeja-format}
 
 \input{02-info-to-fill}
-\usepackage[]{hyperref}
-\hypersetup{hidelinks,hypertexnames=true}
+\definecolor{linkcolour}{RGB}{0,0,153} % blue, web safe, not annoying
+\usepackage[
+  colorlinks=true,
+  linkcolor=linkcolour,
+  urlcolor =linkcolour,
+  citecolor=linkcolour,
+  anchorcolor=linkcolour,
+  linkbordercolor=linkcolour,
+  pdfborderstyle={/S/U/W 1}
+]{hyperref}
 
 \begin{document}
 \pagenumbering{roman}
@@ -30,18 +38,22 @@
 \clearpage
 \input{parte-inicial/abstract}
 
-\clearpage
-\indicegeral
-\clearpage
-\indicedefiguras % Remover se houver menos de 5 figuras
-%\clearpage
-%\indicedetabelas % Remover se houver menos de 5 tabelas
-\clearpage
-\indicedelistagens % Remover se houver menos de 5 listagens
+{
+  \hypersetup{hidelinks,hypertexnames=true}
 
-% No caso de se verificar "um número significativamente elevado de abreviaturas e siglas" deve retirar-se o
-% comentário da linha seguinte e preencher o ficheiro parte-inicial/abreviaturas.tex
-\include{parte-inicial/abreviaturas}
+  \clearpage
+  \indicegeral
+  \clearpage
+  \indicedefiguras % Remover se houver menos de 5 figuras
+  %\clearpage
+  %\indicedetabelas % Remover se houver menos de 5 tabelas
+  \clearpage
+  \indicedelistagens % Remover se houver menos de 5 listagens
+
+  % No caso de se verificar "um número significativamente elevado de abreviaturas e siglas" deve retirar-se o
+  % comentário da linha seguinte e preencher o ficheiro parte-inicial/abreviaturas.tex
+  \include{parte-inicial/abreviaturas}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter  \pagestyle{ruled} % parte principal

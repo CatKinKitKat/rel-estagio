@@ -48,7 +48,8 @@
   backref=true,
   backend=biber,
   %style=ieee,
-  citestyle=numeric
+  citestyle=numeric,
+  sorting=none
 ]{biblatex}
 
 \pt-en{

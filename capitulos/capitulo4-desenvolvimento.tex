@@ -1,24 +1,24 @@
 \chapter{Desenvolvimento do projeto}\label{cap4}
 
-Este capítulo descreve o projeto atribuído no estágio e o seu desenvolvimento. Sendo que este capítulo será o mais longo, mas consequentemente o mais importante e o mais complexo.
+Este capítulo descreve o projeto atribuído no estágio e o seu desenvolvimento, sendo este o capítulo mais longo, mas consequentemente o mais importante e o mais complexo.
 
 \section{Introdução}
 
-Como anteriormente referido foi destacada a tarefa de implementação de um projeto no estágio. Este projeto consiste em um software que permite a gestão das especificações de Webshops.
+Como anteriormente referido foi destacada a tarefa de implementação de um projeto no estágio. Este projeto consiste no desenvolvimento de um software que permite a gestão das especificações de Webshops.
 
 Estas Webshops são, como o nome indica, as lojas online as quais são clientes da Optiply. Estas lojas online são responsáveis por fornecer os produtos que os clientes compram e a Optiply é responsável por fornecer a gestão inteligente dos produtos em stock.
 
-O trabalho foi recebido num \textit{.pdf}, numa reunião de video-conferencia, com o coordenador do estágio (Fábio Belga), o seu subordinado (André Figueira) que ficou encarregado de orientar os estagiários de Backend, e os mesmos (o autor deste relatório, Gonçalo Amaro e o estagiário da universade de Évora, José Azevedo), após a nossa fase formativa do \textit{Onboarding} descrita no capítulo anterior.
+O trabalho foi recebido num \textit{.pdf}, numa reunião por video-conferencia, com o coordenador do estágio (Fábio Belga), um dos seus subordinados (André Figueira) que ficou encarregado de orientar os estagiários de Backend, e os mesmos (o autor deste relatório, Gonçalo Amaro e o estagiário da universade de Évora, José Azevedo), tendo esta reunião ocorrido após a fase formativa do \textit{Onboarding} descrita no capítulo anterior.
 
-Assim, as primeiras secções deste capítulo servem como uma apresentação do equivalente à minha introdução ao projeto.
+Assim, as primeiras secções deste capítulo servem como uma apresentação do projeto desenvolvido.
 
 \section{Objetivos}
 
-O objetivo descrito deste projeto é desenvolver um microserviço que permita a gestão das especificações de Webshops, já o verdadeiro objetivo deste projeto é fornecer treino ao estagiário nas tecnologias da \textit{Tech Stack} da empresa, ou pelo menos num dos projetos da mesma.
+O objetivo deste projeto foi desenvolver um microserviço que permitisse a gestão das especificações de Webshops, contudo, o verdadeiro objetivo deste projeto é fornecer treino ao estagiário nas tecnologias da \textit{Tech Stack} da empresa, ou pelo menos num dos seus projetos.
 
 \newpage
 
-Essa \textit{Tech Stack} referida é a seguinte:
+A \textit{Tech Stack} referida é a seguinte:
 
 \begin{itemize}
   \item Micronaut: Framework de desenvolvimento de microserviços.
@@ -31,9 +31,11 @@ Essa \textit{Tech Stack} referida é a seguinte:
   \item Mockito: Framework de auxiliar a testes via simulação.
 \end{itemize}
 
-Voltando ao objetivo escrito do projeto (desenvolver um microserviço que permita a gestão das especificações de Webshops), o objetivo é desenvolver uma RESTful API que permita gerir as especificações de Webshops.
+Para desenvolver este microserviço temos de saber variados conjuntos de informação. Uns técnicos e outros específicos ao projeto, nomeadamente:
 
-Para isso temos de saber que cada Webshop têm um conjunto de especificações, as quais são:
+\noindent\ \bullet\ Ter conhecimento sobre a especificação de REST, que é um protocolo de comunicação entre aplicações via pedidos HTTP, com \textit{standards} de resposta em \textit{status} codes mas ainda assim flexíveis;
+
+\noindent\ \bullet\ Que cada Webshop têm um conjunto de especificações, das quais representam informações e estados relevantes à entidade que esta refere. As quais são:
 
 \begin{itemize}
   \item \textit{URL:} URL da loja online, têm validação e requer protocolo na URL;
@@ -50,13 +52,14 @@ Para isso temos de saber que cada Webshop têm um conjunto de especificações, 
 \end{itemize}
 
 Sendo que as ultimas especificações (as \textit{Settings}) são Extras, ou seja, não são obrigatórias, mas foram implementadas.
+
 \newpage
 
-Essa API tem um determinado conjunto de tarefas a cumprir as quais são:
+O microserviço tem um determinado conjunto de tarefas a cumprir as quais são:
 
 \begin{itemize}
   \item Obter uma única Webshop;
-  \item Obter várias Webshops:
+  \item Pesquisa de Webshops:
     \begin{itemize}
       \item Deve ser capaz de ordenar e filtrar por qualquer campo da tabela;
       \item Só é necessário ordenar por um único campo. Os resultados devem ser consistentes com cada pedido. (Se ordenar por Taxa de Juros, como pode-se garantir que os mesmos resultados sejam obtidos em todos os pedidos?)
@@ -77,47 +80,43 @@ Essa API tem um determinado conjunto de tarefas a cumprir as quais são:
   \item \textbf{Extra:} Atualizar as configurações da Webshop.
 \end{itemize}
 
-Tendo sempre em conta que os resultados devem ser idempotentes e no seu estado mais recente e que os pedidos HTTP retornam:
+Tendo sempre em conta que os resultados devem ser idempotentes e no seu estado mais recente e que os pedidos HTTP devem retornar:
 
 \begin{itemize}
-  \item Criar deve retornar 201.
-  \item Obter e Atualizar devem retornar 200.
-  \item Apagar deve retornar 204.
-  \item Qualquer pedido deve retornar 404 se a loja não existir.
-  \item Qualquer outro erro interno deve retornar 500 (Erro Interno).
+  \item Criar deve retornar o \textit{status code} 201.
+  \item Obter e Atualizar devem retornar o \textit{status code} 200.
+  \item Apagar deve retornar o \textit{status code} 204.
+  \item Qualquer pedido deve retornar o \textit{status code} 404 se a loja não existir.
+  \item Qualquer outro erro interno deve retornar o \textit{status code} 500 (Erro Interno).
 \end{itemize}
 
-Esta lista  é bastante extensa, mas é bastante simples para entender o que é, no entanto é estupidamente obscura a segunda intenção da lista, esta era a lista implícita de \textit{endpoints} da API\@.
-
-O qual inicialmente não vendo uma lista de \textit{endpoints} explicita nem uma mera referência na reunião, a primeira iteração do trabalho foi usado os \textit{endpoints} que se achou mais convenientes para o trabalho. Com isto dizendo que foi necessário ter de os refazer após a primeira receção de \textit{feedback}.
+\newpage
 
 \section{Implementação}
 
 \subsection{Pré-Requisitos}
 
-Para começar a implementar a API, precisa-se de um conjunto de ferramentas. Essas ferramentas passam por um JDK (um SDK de Java), otimamente algo aberto e conforme os standards de \href{https://openjdk.org/}{OpenJDK}, o qual usei \href{https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html}{Amazon Corretto}, visto à sua licença aberta e gratuita, multiplataforma e vem com suporte de longo prazo que incluirá melhorias de desempenho e correções de segurança.
+Para começar a implementar a API, precisa-se de um conjunto de ferramentas. Essas ferramentas passam por um JDK (um SDK de Java), otimamente algo aberto e conforme os standards de \href{https://openjdk.org/}{OpenJDK}, tendo sido utilizado o \href{https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html}{Amazon Corretto}\cite{corretto}, visto à sua licença ser aberta e gratuita, multiplataforma e vem com suporte de longo prazo que incluirá melhorias de desempenho e correções de segurança.
 
-Para gestão de pacotes e tarefas, precisa-se de um gestor de pacotes, o qual usei o \href{https://gradle.org/}{Gradle}, e como um dos meus computadores de trabalho usa \href{https://www.microsoft.com/pt-pt/software-download/windows10} em vez de \href{https://archlinux.org/download/}{Linux}, a instalação do \href{https://gradle.org/}{Gradle} sem um gestor de pacotes e alteração do path, dá-nos jeito usar um IDE que trate desses assuntos, o qual foi-me recomendado (e usado): \href{https://www.jetbrains.com/idea/}{IntelliJ IDEA} da \href{https://www.jetbrains.com/}{JetBrains}.
+Para gestão de pacotes e tarefas, precisou-se de um gestor de pacotes, tendo sido utilizado o \href{https://gradle.org/}{Gradle}, e como um dos meus computadores de trabalho usa \href{https://www.microsoft.com/pt-pt/software-download/windows10} em vez de \href{https://archlinux.org/download/}{Linux}, a instalação do \href{https://gradle.org/}{Gradle} sem um gestor de pacotes e alteração do path, facilitou usar um IDE que trate desses assuntos, o qual foi recomendado o \href{https://www.jetbrains.com/idea/}{IntelliJ IDEA} da \href{https://www.jetbrains.com/}{JetBrains}.
 
-Para hospedar a base de dados e o projeto, numa pequena rede de containers interna, foi instalado o \href{https://www.docker.com/}{Docker} no \textit{desktop} \href{https://www.microsoft.com/pt-pt/software-download/windows10}{Windows} (e usado o \href{https://podman.io/}{Podman} no portátil \href{https://archlinux.org/download/}{Linux}, pelo simplesmente facto de já o ter instalado previamente).
+Para hospedar a base de dados e o projeto, numa pequena rede de containers interna, foi instalado o \href{https://www.docker.com/}{Docker} no \textit{desktop} \href{https://www.microsoft.com/pt-pt/software-download/windows10}{Windows} (e utilizado o \href{https://podman.io/}{Podman} no portátil \href{https://archlinux.org/download/}{Linux}, pelo simples facto de já o ter instalado previamente).
 
 No entanto ainda falta algo bastante importante. Nomeadamente, algo que faça o Bootstrap do projeto em \href{https://micronaut.io/}{Micronaut}, para isso temos variadas opções:
 
 \begin{itemize}
   \item Ir ao o \href{https://micronaut.io/launch}{Micronaut Launch Website}
-  \item Usar o \href{https://micronaut.io/download/}{Micronaut CLI} \href{https://micronaut-projects.github.io/micronaut-starter/latest/guide/index.html}{em que temos aqui a documentação}
-  \item Fazer \href{https://curl.se/}{curl} à API do \href{https://micronaut.io/}{Micronaut} Launch \href{https://launch.micronaut.io/create/default/com.optiply.project.webshop?lang=JAVA&build=GRADLE&test=JUNIT&javaVersion=JDK_17&features=jackson-databind&features=kubernetes-reactor-client&features=properties&features=flyway&features=jdbc-hikari&features=jooq&features=postgres&features=r2dbc&features=testcontainers&features=lombok&features=mockito&features=openrewrite&features=asciidoctor&features=logback&features=reactor&features=security-jwt&features=problem-json&features=jackson-xml}{https://launch.micronaut.io/create/default}
+  \item Usar o \href{https://micronaut.io/download/}{Micronaut CLI} \href{https://micronaut-projects.github.io/micronaut-starter/latest/guide/index.html}{(em que temos aqui a documentação)}
+  \item Fazer \href{https://curl.se/}{curl} à API do \href{https://launch.micronaut.io/create/default/com.optiply.project.webshop?lang=JAVA&build=GRADLE&test=JUNIT&javaVersion=JDK_17&features=jackson-databind&features=kubernetes-reactor-client&features=properties&features=flyway&features=jdbc-hikari&features=jooq&features=postgres&features=r2dbc&features=testcontainers&features=lombok&features=mockito&features=openrewrite&features=asciidoctor&features=logback&features=reactor&features=security-jwt&features=problem-json&features=jackson-xml}{Micronaut Launch}
 \end{itemize}
 
 O qual nenhum foi necessário pela razão estabelecidade na subsecção imediatamente seguinte.
 
 \subsection{Inicio do Projeto}
 
-Neste caso em especifico foi fornecido um repositório privado no \href{https://bitbucket.org/}{BitBucket}, o qual apenas foi necessário fazer uma \textit{fork}. O estado desse repositório e da \textit{fork} pode ser visto no neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/tree/07d359ce933dde634f176dc95bf5ac1b3e4bc93d}{\textit{commit}} (\href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST}{num repositório do autor} do \href{https://github.com/}{GitHub}, onde no projeto foi adicionado como segunda origem, para backup).
+Neste caso em especifico foi fornecido um repositório privado no \href{https://bitbucket.org/}{BitBucket}, o qual apenas foi necessário fazer uma \textit{fork}. O estado desse repositório e da \textit{fork} pode ser visto no neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/tree/07d359ce933dde634f176dc95bf5ac1b3e4bc93d}{\textit{commit}} (\href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST}{num repositório do autor} do \href{https://github.com/}{GitHub}, onde no projeto foi adicionado como segunda origem, para backup \cite{backup}).
 
 Nesta diretoria de projeto nos atribuída, foi calculada que era maior e mais complicada que o necessário, talvez esta seja única e o que varia são os projetos que a usam. Com isso em conta foi decido, fazer uma redução ao projeto, para que ficasse mais simples de trabalhar e não houvessem pacotes ou funcionalidades que não fossem necessárias.
-
-Isto pode ser observado neste \href{https://github.com/CatKinKitKat/MicronautJooqPostgresREST/commit/3c71d709599662436ae13cf9dcf609a5ca5464e3}{\textit{commit}} (o qual descrição reflete determinada observação).
 
 Após a redução, o projeto ficou com apenas dois subprojetos para o Gradle gerir, um que contem a aplicação em sí e o outro que trata dos repositórios/classes de transações à base de dados. O numero de pacotes externos e funcionalidades foi reduzido para o mínimo necessário, esses incluíram: \href{https://flywaydb.org/}{Flyway}, \href{http://fasterxml.com/}{Jackson}, \href{https://www.jooq.org/}{jOOQ}, \href{https://junit.org/junit5/}{JUnit}, \href{https://logback.qos.ch/}{Logback}, \href{https://projectlombok.org/}{Lombok}, \href{https://site.mockito.org/}{Mockito}, \href{https://jdbc.postgresql.org/}{Postgres}, \href{https://r2dbc.io/}{R2DBC} e \href{https://projectreactor.io/}{Reactor}.
 
@@ -163,9 +162,9 @@ O \href{https://site.mockito.org/}{Mockito} é um framework auxiliar de testes, 
 
 Com os mocks, podemos testar objetos que ainda não existem, como um objeto de um repositório de dados, ou um objeto de um serviço. Como também isolamos o comportamento dos objetos, evitamos que os objetos sejam alterados durante o teste ou para testar apenas o comportamento do que comunica com o mesmo.
 
-\paragraph{\href{https://jdbc.postgresql.org/}{PostgreSQL}\\}
+\paragraph{\href{https://jdbc.postgresql.org/}{PostgreSQL JDBC}\\}
 
-O \href{https://jdbc.postgresql.org/}{PostgreSQL} é um driver JDBC, que é usado para conectar a bases de dados PostgreSQL. Um driver JDBC é um driver que permite ao Java a comunicação com bases de dados.\cite{postgresql}
+O \href{https://jdbc.postgresql.org/}{PostgreSQL JDBC} é um driver JDBC, que é usado para conectar a bases de dados PostgreSQL. Um driver JDBC é um driver que permite ao Java a comunicação com bases de dados.\cite{postgresql}
 
 PostgreSQL é o tipo de base de dados usado no projeto.
 
@@ -175,7 +174,7 @@ O \href{https://r2dbc.io/}{R2DBC} é um driver de conexão à base de dados, mas
 
 \paragraph{\href{https://projectreactor.io/}{Reactor}\\}
 
-O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada em um fluxo de eventos.\cite{reactor}
+O \href{https://projectreactor.io/}{Reactor} é um framework de eventos, que é usado para gerir eventos e criar aplicações reativas. Uma aplicação reativa é uma aplicação que é executada num fluxo de eventos.\cite{reactor}
 
 \subsection{Paradigma de Programação}
 
@@ -183,9 +182,9 @@ Programação reativa é o acto de programar para trabalhar com fluxos de dados 
 
 \newpage
 
-Nas formas tradicionais de programar/desenvolver, de modo \textbf{muito} genérico, cria-se variadas tarefas e elas comunicam-se em tempos pré-determinados, com respostas pré-determinadas, são ``rígidas'', seguem regras diretas.
+Nas formas tradicionais de programar/desenvolver, de modo \textbf{muito} genérico, cria-se variadas tarefas e comunicam apenas em tempos pré-determinados, com respostas pré-determinadas, são ``rígidas'' e seguem regras diretas.
 
-Isto funciona e continua a ser utilizada até hoje, entretanto esta ``lógica'' não é compatível com as necessidades de alguns serviços atuais e os seus inúmeros clientes e dados. Na programação reativa isto ocorre de uma forma semelhante, mas mais inteligente, interligada em paralelo, sem seguir uma ordem cronológica e linear.
+Isto funciona e continua a ser utilizado nos dias de hoje, no entanto, esta ``lógica'' não é compatível com as necessidades de alguns serviços atuais e os seus inúmeros clientes e dados. Na programação reativa isto ocorre de uma forma semelhante, mas mais inteligente, interligada em paralelo, sem seguir uma ordem cronológica e linear.
 
 Os pilares da programação reativa são:
 
@@ -195,13 +194,13 @@ Os pilares da programação reativa são:
     falhas de software, hardware e de conectividade;
   \item \textbf{Message Driven:} Reage aos eventos (event driven): em vez de compor
     aplicações por múltiplas threads síncronas, sistemas são compostos de gerenciadores de eventos assíncronos e não bloqueantes;
-  \item \textbf{Responsivo:} Reage aos usuários: aplicações que oferecem interações
-    ricas e ``tempo real'' com usuários.
+  \item \textbf{Responsivo:} Reage aos utilizadores: aplicações que oferecem interações
+    ricas e ``tempo real'' com utilizadores.
 \end{itemize}
 
 \subsection{Estrutura do Projeto}
 
-A estrutura do projeto, como dito anteriormente, foi uma modificação do herdado da estrutura inicial vinda do repositório oferecido para \textit{forking}. Este projeto consistiu num projeto Gradle com três subprojetos: um pacote com classes entendidas de Monos, um pacote para o core do projeto, e um pacote para os repositórios que tratam das transações com a base de dados.
+A estrutura do projeto, como dito anteriormente, foi herdada da estrutura inicial vinda do repositório oferecido para \textit{forking}. Este projeto consistiu num projeto Gradle com três subprojetos: um pacote com classes estendidas de Monos, um pacote para o core do projeto, e um pacote para os repositórios que tratam das transações com a base de dados.
 
 Sendo que as classes eram apenas \textit{MonoVoid}, \textit{MonoFalse} e \textit{MonoTrue} que simplesmente implementavam a interface \textit{Mono} e retornavam um valor booleano (ou nenhum), decidi cortá-las visto que não trazem quais quer nova funcionalidade ao projeto e não me custa escrever \textit{Mono<Boolean>} e retornar um valor booleano.
 
@@ -219,7 +218,15 @@ Para o projeto, a estratégia de desenvolvimento foi o \textit{Kanban}, ou pelo 
 
 A metodologia de trabalho começava por ir identificando tarefas, se muito complexas dividi-las em pequenas tarefas e julgando a minha capacidade de as fazer. Colocando na coluna respetiva e depois trabalhando de acordo com o estado do quadro.
 
-Este quadro infelizmente já não está acessível, pois a conta empresarial já foi fechada e não houve \textit{backup}.
+Este quadro infelizmente já não está acessível, pois a conta empresarial já foi fechada e não houve \textit{backup}. No entanto a \textbf{Figura 4.1} exemplifica o quadro de tarefas.
+
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=14cm]{figuras/kanban.png}
+  \caption{Exemplo do quadro Kanban, criado no \href{https://gitmind.com/app/flowchart/e7311869657}{GitMind}}
+  \label{fig:kanban}
+\end{figure}
+\FloatBarrier
 
 \subsubsection{Nota sobre a escolha}
 
@@ -236,7 +243,7 @@ Para testar o software, foi recomendado uma mistura de \textit{JUnit} e \textit{
 
 Houve também uma secção chamada \textit{shared}, onde havia um conjunto de classes que orientava o pacote do \textit{TestContainers} e o seu \textit{container} de teste \textit{PostgreSQL}.
 
-Notando que um dos requerimentos do projeto era que um pacote do Gradle, chamado JaCoCo e que este verifica a percentagem de código testado, fosse incluído no projeto e o resultado mínimo obtido fosse de 80\%. O que foi feito e entregue, com 82\% na entrega final e que houve uma altura que foi entregue com uns 100\% de coverage (na secção seguinte 4.3.6 detalha-se o porquê), no então noto também que este relatório refere-se principalmente ao estado da entrega final.
+Notando que um dos requerimentos do projeto era que um pacote do Gradle, chamado JaCoCo e que este verifica a percentagem de código testado, fosse incluído no projeto e o resultado mínimo obtido fosse de 80\%. O que foi feito e entregue, com 82\% na entrega final e tendo sido entregue a determinada altura com cerca de  100\% de coverage (na secção seguinte 4.3.6 detalha-se o porquê), no entanto noto também que este relatório se refere principalmente ao estado da entrega final.
 
 \subsubsection{Testes de unidade}
 
@@ -248,7 +255,7 @@ Foram feitos testes de unidade para as classes dos modelos (os objetos com que c
 
 Os testes de integração são testes que testam o funcionamento do software como um todo. Este tipo de testes permitem verificar o correto funcionamento do software ou permitir identificar se existe algum \textit{bug} no software, sabendo também se esse erro está na integração das unidades se em conjunto com testes de unidade sem testes falhados.
 
-Foi feita uma serie de testes de integração para a classe do \textit{controller}, que é responsável por receber os \textit{requests} à API e assim testando o funcionamento da API num todo.
+Foi feita uma serie de testes de integração para a classe do \textit{controller}, que é responsável por receber os \textit{requests} à API e assim sendo testado o seu funcionamento num todo.
 
 \subsection{\textit{Feedback}}
 
@@ -271,7 +278,7 @@ Seguinte, os caminhos da URI, para os simplificar o mais possível, não precisa
 
 Exemplo: \texttt{\textbf{HTTP DELETE ->} http://localhost/remove/\{id\}} passar para\\\texttt{\textbf{HTTP DELETE ->} http://localhost/\{id\}}.
 
-Por último, e não menos importante, os conceitos \textit{SOLID} devem ser seguidos ao máximo independentemente do que achamos que vai ser o rumo do software. Isto porquê? Foi pensado que visto que não iriam haver mais do que uma interface de comunicação com o software, sendo apenas necessário um \textit{controller} que serve a comunicação REST HTTP, não seria necessário uma outra classe com o \textit{business logic}, ou seja uma classe de serviço onde \textit{controllers} iriam buscar. Isto estava errado mesmo que a lógica sobre esta decisão não estivesse muito errada. O software deve separar o \textit{business logic} do \textit{controller} o mais possível e o software deve ser extensível.
+Por último, e não menos importante, os conceitos \textit{SOLID} devem ser seguidos ao máximo independentemente do que achamos que vai ser o rumo do software. Isto porquê? Foi pensado que visto que não iriam haver mais do que uma interface de comunicação com o software, sendo apenas necessário um \textit{controller} que serve a comunicação REST HTTP, não seria necessário uma outra classe com o \textit{business logic}, ou seja uma classe de serviço onde \textit{controllers} comunicam o os dados do pedido recebido. Isto estava errado mesmo que a lógica sobre esta decisão não estivesse muito errada. O software deve separar o \textit{business logic} do \textit{controller} o mais possível e o software deve ser extensível.
 
 \subsubsection{\textit{Feedback} da segunda entrega (final)}
 

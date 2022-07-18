@@ -8,15 +8,15 @@ Este capitulo descreve em detalhe o funcionamento do projeto desenvolvido durant
 
 O \textit{Webshop Service Specification} é uma RESTful API reactiva, que consiste em gerir as especificações de Webshops, ou seja um microserviço reactivo. Este microserviço recebe pedidos HTTP e retorna uma resposta JSON com o resultado, nomeadamente uma Webshop ou uma caraterística da mesma.
 
-Sendo esta API reactiva, ela emprega o uso de \textit{threading} (divisão de tarefas em subprocessos) para poder executar variados pedidos em simultâneo, o mais depressa possível. No entanto esses processos concorrentes e assíncronos requerem um outro nível de cuidado e atenção no que toca à integridade e idempotência dos dados requeridos.
+Sendo esta API reactiva, ela emprega o uso de \textit{threading} (divisão de tarefas em subprocessos) para poder executar variados pedidos em simultâneo, o mais depressa possível. No entanto, esses processos concorrentes e assíncronos requerem outro nível de cuidado e atenção no que toca à integridade e idempotência dos dados requeridos.
 
 As relações empregues por uma aplicação reactiva são os padrões de \textit{Publisher/Subscriber}, onde um pedido, ou uma transação, é uma mensagem enviada pela fonte desses dados, chamada de um \textit{Publisher} e a sua receção, ou seja onde os dados são consumidos, é encarregado pelo(s) \textit{Subscriber(s)}. Se um desses pedidos for uma mensagem com varias subscrições ao longo do tempo, devemos alterar o \textit{scheduling}, que gere as filas de processos e acessos.
 
-Com isto podemos dizer que os \textit{endpoints} desta API são \textit{Subscribers} e o serviço transacional que comunica diretamente com os dados da base de dados é o nosso \textit{Publisher}. Este tipo de acessos reactivos à base dados requer um outro tipo de mecanismo de processo de transações SQL, o qual deve ser também reactivo de modo a que a base de dados seja vista e funcione com um \textit{Publisher} e seja configurável a sua propagação.
+Com isto podemos dizer que os \textit{endpoints} desta API são \textit{Subscribers} e o serviço transacional que comunica diretamente com os dados da base de dados é o nosso \textit{Publisher}. Este tipo de acessos reactivos à base dados requer outro tipo de mecanismo de processo de transações SQL, o qual deve ser também reactivo de modo a que a base de dados seja vista e funcione com um \textit{Publisher} e seja configurável a sua propagação.
 
 \newpage
 
-Pegando na excelente descrição anterior, o funcionamento deste microserviço pode ser reduzido ao seguinte \textit{flowchart}:
+Pegando na descrição anterior, o funcionamento deste microserviço pode ser reduzido ao \textit{flowchart} da \textbf{Figura 5.1}:
 
 \begin{figure}[!hbt]
   \centering
@@ -26,7 +26,7 @@ Pegando na excelente descrição anterior, o funcionamento deste microserviço p
 \end{figure}
 \FloatBarrier
 
-Cada um destes processos descritos no \textit{flowchart} (os quadrados), é um objeto ou classe. Os principais vão ser seguidamente descritos com maior detalhe, nas secções seguintes.
+Cada um destes processos descritos no \textit{flowchart}, é um objeto ou classe. Os principais vão ser seguidamente descritos com maior detalhe, nas secções seguintes.
 
 \newpage
 
@@ -52,77 +52,87 @@ Dentro da \textit{root directory} do projeto contemos variadas subdirectorias e 
   \item \texttt{\textbf{lombok.config -> }} ficheiro de configuração \textbf{opcional} do Lombok, onde aqui defino para adicionar a anotação \texttt{@Generated} as suas classes geradas para \textit{fugir} ao JaCoCo;
   \item \texttt{\textbf{micronaut-cli.yml -> }} ficheiro de preferências da criação de um projeto Micronaut via a sua ferramenta CLI;
   \item \texttt{\textbf{postgres-compose.yml -> }} ficheiro de \textbf{docker-compose} para compor e lançar containers com pré configurações, neste caso um container de PostgreSQL;
-  \item \texttt{\textbf{settings.gradle -> }} ficheiro de configuração do Gradle onde se definem os subprojetos do projeto Gradle, é executado a cada \textit{build task}.
+  \item \texttt{\textbf{settings.gradle -> }} ficheiro de configuração do Gradle onde se definem os subprojetos do projeto Gradle. Executado a cada \textit{build task}.
 \end{itemize}
 
 \newpage
 
 \subsection{\textit{\textit{Endpoints} package}}\label{endp}
 
-Este é o subprojeto \textit{Endpoints} onde contêm toda a estrutura base da API, deste o ponto inicial da aplicação, às configurações, modelos, controladores e serviços. Tendo em conta que \texttt{com/optiply/endpoint/} fica como reticências, temos que:
+Este é o subprojeto \textit{Endpoints} que contêm toda a estrutura base da API, desde o ponto inicial da aplicação, às configurações, modelos, controladores e serviços. Para reduzir a largura da descrição do projeto o caminho \texttt{com/optiply/endpoint/} é colocado como reticências. Logo, exemplarmente temos que (\textbf{Tabelas 5.1 e 5.2}):
 
-\begin{itemize}
-  \item \texttt{\textbf{src/main/}}\begin{itemize}
-      \item \texttt{\textbf{java/}}\begin{itemize}
-          \item \texttt{\textbf{\ldots/config/}}\begin{itemize}
-              \item \texttt{\textbf{DataSourceConfig.java}}
-            \end{itemize}
-          \item \texttt{\textbf{\ldots/controllers/}}\begin{itemize}
-              \item \texttt{\textbf{shared/interfaces/IBaseController.java}}
-              \item \texttt{\textbf{shared/BaseController.java}}
-              \item \texttt{\textbf{JSONController.java}}
-            \end{itemize}
-          \item \texttt{\textbf{\ldots/models/}}\begin{itemize}
-              \item \texttt{\textbf{EmailListModel.java}}
-              \item \texttt{\textbf{HandleModel.java}}
-              \item \texttt{\textbf{InterestRateModel.java}}
-              \item \texttt{\textbf{ServiceLevelsModel.java}}
-              \item \texttt{\textbf{SettingsModel.java}}
-              \item \texttt{\textbf{UrlModel.java}}
-              \item \texttt{\textbf{WebshopFullModel.java}}
-              \item \texttt{\textbf{WebshopModel.java}}
-              \item \texttt{\textbf{WebshopSettingsModel.java}}
-            \end{itemize}
-          \item \texttt{\textbf{\ldots/services/}}\begin{itemize}
-              \item \texttt{\textbf{RepositoryService.java}}
-            \end{itemize}
-          \item \texttt{\textbf{\ldots/EndpointApplication.java}}
-        \end{itemize}
-      \item \texttt{\textbf{resources/}}\begin{itemize}
-          \item \texttt{\textbf{db/migration/}}\begin{itemize}
-              \item \texttt{\textbf{V1\_\_create\_initial\_schema.sql}}
-            \end{itemize}
-          \item \texttt{\textbf{application.yaml}}
-          \item \texttt{\textbf{bootstrap.yaml}}
-          \item \texttt{\textbf{logback.xml}}
-        \end{itemize}
-    \end{itemize}
-\end{itemize}
+\begin{table}[!hbt]
+  \begin{itemize}
+    \item \texttt{\textbf{src/main/}}\begin{itemize}
+            \item \texttt{\textbf{java/}}\begin{itemize}
+                    \item \texttt{\textbf{\ldots/config/}}\begin{itemize}
+                            \item \texttt{\textbf{DataSourceConfig.java}}
+                          \end{itemize}
+                    \item \texttt{\textbf{\ldots/controllers/}}\begin{itemize}
+                            \item \texttt{\textbf{shared/interfaces/IBaseController.java}}
+                            \item \texttt{\textbf{shared/BaseController.java}}
+                            \item \texttt{\textbf{JSONController.java}}
+                          \end{itemize}
+                    \item \texttt{\textbf{\ldots/models/}}\begin{itemize}
+                            \item \texttt{\textbf{EmailListModel.java}}
+                            \item \texttt{\textbf{HandleModel.java}}
+                            \item \texttt{\textbf{InterestRateModel.java}}
+                            \item \texttt{\textbf{ServiceLevelsModel.java}}
+                            \item \texttt{\textbf{SettingsModel.java}}
+                            \item \texttt{\textbf{UrlModel.java}}
+                            \item \texttt{\textbf{WebshopFullModel.java}}
+                            \item \texttt{\textbf{WebshopModel.java}}
+                            \item \texttt{\textbf{WebshopSettingsModel.java}}
+                          \end{itemize}
+                    \item \texttt{\textbf{\ldots/services/}}\begin{itemize}
+                            \item \texttt{\textbf{RepositoryService.java}}
+                          \end{itemize}
+                    \item \texttt{\textbf{\ldots/EndpointApplication.java}}
+                  \end{itemize}
+            \item \texttt{\textbf{resources/}}\begin{itemize}
+                    \item \texttt{\textbf{db/migration/}}\begin{itemize}
+                            \item \texttt{\textbf{V1\_\_create\_initial\_schema.sql}}
+                          \end{itemize}
+                    \item \texttt{\textbf{application.yaml}}
+                    \item \texttt{\textbf{bootstrap.yaml}}
+                    \item \texttt{\textbf{logback.xml}}
+                  \end{itemize}
+          \end{itemize}
+  \end{itemize}
+  \label{tab:endp1}
+  \caption{Arquivos do subprojeto \textit{Endpoints} (\textbf{src/main/})}
+\end{table}
+\FloatBarrier
 
 \newpage
 
+\begin{table}[!hbt]
 \begin{itemize}
   \item \texttt{\textbf{src/test/}}\begin{itemize}
-      \item \texttt{\textbf{java/}}\begin{itemize}
-          \item \texttt{\textbf{integration/}}\begin{itemize}
-              \item \texttt{\textbf{\ldots/controllers/JSONControllerIntegrationTests.java}}
-            \end{itemize}
-          \item \texttt{\textbf{shared/}}\begin{itemize}
-              \item \texttt{\textbf{\ldots/container/TestContainer.java}}
-              \item \texttt{\textbf{\ldots/environment/TestEnvironment.java}}
-            \end{itemize}
-          \item \texttt{\textbf{unit/}}\begin{itemize}
-              \item \texttt{\textbf{\ldots/models/WebshopFullModelsUnitTests.java}}
-              \item \texttt{\textbf{\ldots/services/RepositoryServiceUnitTests.java}}
-            \end{itemize}
+          \item \texttt{\textbf{java/}}\begin{itemize}
+                  \item \texttt{\textbf{integration/}}\begin{itemize}
+                          \item \texttt{\textbf{\ldots/controllers/JSONControllerIntegrationTests.java}}
+                        \end{itemize}
+                  \item \texttt{\textbf{shared/}}\begin{itemize}
+                          \item \texttt{\textbf{\ldots/container/TestContainer.java}}
+                          \item \texttt{\textbf{\ldots/environment/TestEnvironment.java}}
+                        \end{itemize}
+                  \item \texttt{\textbf{unit/}}\begin{itemize}
+                          \item \texttt{\textbf{\ldots/models/WebshopFullModelsUnitTests.java}}
+                          \item \texttt{\textbf{\ldots/services/RepositoryServiceUnitTests.java}}
+                        \end{itemize}
+                \end{itemize}
+          \item \texttt{\textbf{resources/}}\begin{itemize}
+                  \item \texttt{\textbf{application-test.yaml}}
+                \end{itemize}
         \end{itemize}
-      \item \texttt{\textbf{resources/}}\begin{itemize}
-          \item \texttt{\textbf{application-test.yaml}}
-        \end{itemize}
-    \end{itemize}
 \end{itemize}
+\label{tab:endp2}
+\caption{Arquivos do subprojeto \textit{Endpoints} (\textit{src/test/})}
+\end{table}
+\FloatBarrier
 
-Sendo que é clara a funcionalidade de cada classe pelo nome e pelo local onde se encontra. Mesmo sendo esse o caso, seguimos para uma explicação breve do que cada classe ou ficheiro faz, excluindo as classes de modelos, pois são obviamente modelos dos objetos transacionais (os corpos em JSON do \textit{request} HTTP) ou de suas partes.
+Sendo clara a funcionalidade de cada classe pelo nome e pelo local onde se encontra, seguimos para uma explicação breve do que cada classe ou ficheiro faz, excluindo as classes de modelos, pois são obviamente modelos dos objetos transacionais (os corpos em JSON do \textit{request} HTTP) ou de suas partes.
 
 \subsubsection*{\texttt{DataSourceConfig.java}}
 
@@ -164,11 +174,11 @@ Para fazer os testes de integração, testes que testam todo um funcionamento ou
 
 \subsubsection*{\texttt{WebshopFullModelsUnitTests.java} \textsuperscript{\textit{Testes}}}
 
-Qualquer processo que ocorra nesta aplicação, é um processo de \textit{messaging}, em que o conteúdo das mensagens é dados de um modelo ou o modelo em si, se queremos ter a certeza que estas mensagens ocorrem de forma esperada temos de testar os modelos que elas comunicam. Esta classe faz testes unitários a cada modelo incluso neste projeto.
+Qualquer processo que ocorra nesta aplicação, é um processo de \textit{messaging}, em que o conteúdo das mensagens são dados de um modelo ou o modelo em si, pois se queremos ter a certeza que estas mensagens ocorrem de forma esperada temos de testar os modelos que o sistema comunica. Esta classe faz testes unitários a cada modelo neste projeto.
 
 \subsubsection*{\texttt{RepositoryServiceUnitTests.java} \textsuperscript{\textit{Testes}}}
 
-O serviço neste projeto é o \textit{middleware} que ofusca o \textit{business logic}, como também serve como a comunicação entre os pontos de entrada e o repositório dados que contem o que é pedido, aqui estão definidos os fluxos reactivos das tarefas a fazer. É preciso fazer testes unitários a este serviço, usando o Mockito para imitar comportamentos de classes e objetos que este comunique para isolar o \textit{scope} dos testes.
+O serviço neste projeto é o \textit{middleware} que ofusca o \textit{business logic}, também serve como a comunicação entre os pontos de entrada e o repositório que contem o que é pedido, aqui estão definidos os fluxos reactivos das tarefas a fazer. É preciso fazer testes unitários a este serviço, usando o Mockito para simular comportamentos de classes e objetos que este comunique para isolar o \textit{scope} dos testes.
 
 \subsubsection*{\texttt{V1\_\_create\_initial\_schema.sql}}
 
@@ -176,27 +186,33 @@ Ficheiro \texttt{.sql} com o esquema inicial da base de dados, onde o Gradle exe
 
 \subsection{\textit{\textit{Infrastructure} package}}\label{infra}
 
-O subprojeto do \textit{Infrastructure} é onde toda a lógica de comunicação com a base de dados está instalada, desde as classes autogeradas do jOOQ aos repositórios, que são as classes que visam o isolamento e abstração das transações SQL com os que requerem que sejam executadas, nomeadamente o serviço no subprojeto anterior.
+O subprojeto do \textit{Infrastructure} é onde toda a lógica de comunicação com a base de dados está instalada, desde as classes autogeradas do jOOQ aos repositórios, que são as classes que visam o isolamento e abstração das transações SQL com os que requerem que sejam executadas, nomeadamente o serviço no subprojeto anterior. Exemplificado na \textbf{tabela 5.3}
 
+
+\begin{table}[!htb]
 \begin{itemize}
   \item \texttt{\textbf{src/main/java/\ldots/data}}\begin{itemize}
-      \item \texttt{\textbf{repositories/}}\begin{itemize}
-          \item \texttt{\textbf{interfaces/}}\begin{itemize}
-              \item \texttt{\textbf{IWebshopemailsRepository.java}}
-              \item \texttt{\textbf{IWebshopRepository.java}}
-            \end{itemize}
-          \item \texttt{\textbf{WebshopemailsRepository.java}}
-          \item \texttt{\textbf{WebshopRepository.java}}
+          \item \texttt{\textbf{repositories/}}\begin{itemize}
+                  \item \texttt{\textbf{interfaces/}}\begin{itemize}
+                          \item \texttt{\textbf{IWebshopemailsRepository.java}}
+                          \item \texttt{\textbf{IWebshopRepository.java}}
+                        \end{itemize}
+                  \item \texttt{\textbf{WebshopemailsRepository.java}}
+                  \item \texttt{\textbf{WebshopRepository.java}}
+                \end{itemize}
+          \item \texttt{\textbf{support/sql/}}\begin{itemize}
+                  \item \texttt{\textbf{QueryResult.java}}
+                \end{itemize}
+          \item \texttt{\textbf{package-info.java}}
+          \item \texttt{\textbf{resources/}}\begin{itemize}
+                  \item \texttt{\textbf{jooq\_schema.sql}}
+                \end{itemize}
         \end{itemize}
-      \item \texttt{\textbf{support/sql/}}\begin{itemize}
-          \item \texttt{\textbf{QueryResult.java}}
-        \end{itemize}
-      \item \texttt{\textbf{package-info.java}}
-      \item \texttt{\textbf{resources/}}\begin{itemize}
-          \item \texttt{\textbf{jooq\_schema.sql}}
-        \end{itemize}
-    \end{itemize}
 \end{itemize}
+\label{tab:infra}
+\caption{Arquivos do subprojeto \textit{Infrastructure}}
+\end{table}
+\FloatBarrier
 
 Aqui contem artefactos peculiares, dos quais interfaces para cada Repositório, uma classe de Enums, um ficheiro SQL e um \textit{package-info}. Estes vãos ser seguidamente explicados, tal como no capitulo anterior.
 
@@ -234,23 +250,23 @@ Classe que é interpretada pela framework e que têm apenas como objetivo obriga
 
 \section{Código}
 
-Nesta seguinte secção vai ser vista em maior detalhe algumas classes e o seu funcionamento especifico, como também explicada algumas decisões po detrás das escolhas feitas sobre o que foi (e como foi) construído.
+Nesta secção vai ser visto em maior detalhe algumas classes e o seu funcionamento especifico, como também ser explicadas algumas decisões por detrás das escolhas feitas sobre o que foi (e como foi) construído.
 
 \subsection{\textit{JSON Controller}}
 
-Esta classe de controlador estende o controlador base que por sí é uma implementação do da seguinte interface:
+Esta classe de controlador estende o controlador base que por sí é uma implementação do da seguinte interface (\textbf{Listagem 5.1}):
 
 \lstinputlisting[frame=bt,language=java,caption={IBaseController.java}]{listagens/IBaseController.java}
 
-Sendo que estes dois métodos são apenas precisos para a função de pesquisa, porém esta sendo um ponto crucial e também o mais importante do micro serviço, estará sempre como requerimento de qualquer possível implementação de um controlador, quer seja ele de \textit{requests} HTTP, gRPC ou quais quer outros.
+Sendo que estes dois métodos são apenas precisos para a função de pesquisa, porém são um ponto crucial e também o mais importante do micro serviço, estará sempre como requerimento de qualquer possível implementação de um controlador, quer seja ele de \textit{requests} HTTP, gRPC ou quais quer outros.
 
-O \texttt{parseParamsWebshop} faz a gestão de toas as condições exposats na URL de pesquisa, tais como \textit{``nome igual a''}, \textit{``nome semelhante a''} ou \textit{``taxa de juro maior/menor que''}. Já a \texttt{sortParserWebshop} indica qual a ordem de chegada dos resultados, sendo que podem de forma ascendente ou descendente (numérica ou alfa-numericamente), ser ordenados por quais quer das suas colunas.
+O \texttt{parseParamsWebshop} faz a gestão de todas as condições exposats na URL de pesquisa, tais como \textit{``nome igual a''}, \textit{``nome semelhante a''} ou \textit{``taxa de juro maior/menor que''}. Já a \texttt{sortParserWebshop} indica qual a ordem de chegada dos resultados, sendo que podem de forma ascendente ou descendente (numérica ou alfa-numericamente), ser ordenados por quais quer das suas colunas.
 
-As implementações desses métodos estão nos anexos \hyperref[an1]{um} e \hyperref[an2]{dois}. A classe implementação também Injeta dois objetos que qualquer classe extensa de esta base precisa: o acesso ao serviço e o \texttt{ObjectMapper} do Jackson.
+As implementações desses métodos estão nos anexos \hyperref[an1]{um} e \hyperref[an2]{dois}. A classe implementação também Injeta dois objetos que qualquer classe extensa de esta base precisa: o acesso ao serviço e o \texttt{ObjectMapper} do Jackson, como podemos ver na \textbf{Listagem 5.2}.
 
 \lstinputlisting[frame=bt,language=java,caption={\textit{Injected Obejcts}}]{listagens/injected.java}
 
-Em suma, este controlador funciona da seguinte forma:
+Em suma, este controlador funciona da seguinte forma (\textbf{Tabela 5.4}):
 
 \begin{table}[!hbt]
   \centering
@@ -268,15 +284,15 @@ Em suma, este controlador funciona da seguinte forma:
 
 \subsection{\textit{Webshop Service}}
 
-Esta classe têm como objetivo abstrair a lógica de negocio do controlador, assim sendo, esta implementa um método para cada endpoint que possa haver no controlador, em que cada um destes métodos é um fluxo de dados (\texttt{Mono} ou \texttt{Flux}), que direcione os dados obtidos num fluxo seguro e previsível desde os repositórios de dados à resposta possível que é enviada. Exemplo:
+Esta classe têm como objetivo abstrair a lógica de negocio do controlador, assim sendo, esta implementa um método para cada endpoint que possa haver no controlador, em que cada um destes métodos é um fluxo de dados (\texttt{Mono} ou \texttt{Flux}), que direcione os dados obtidos num fluxo seguro e previsível desde os repositórios de dados à resposta possível que é enviada. Exemplo ((\textbf{Listagem 5.3})):
 
 \lstinputlisting[frame=bt,language=java,caption={getWebshops()}]{listagens/getWebshops.java}
 
-Aqui, como podemos ver o método é apenas um conjunto de ações no retorno, não existe um momento de espera e como não existe mudança de \textit{schedulers}, o que vem por defeito é o \texttt{Schedulers.parallel()}. Ou seja, esta função funciona em paralelo, sem qualquer espera de dados de outros fluxos, o que vier, vem. Porém:
+Aqui, como podemos ver o método é apenas um conjunto de ações no retorno, não existe um momento de espera e como não existe mudança de \textit{schedulers}, o que vem por defeito é o \texttt{Schedulers.parallel()}. Ou seja, esta função funciona em paralelo, sem qualquer espera de dados de outros fluxos, o que vier, vem.
 
 O que esta faz é a execução da função de pesquisa, aciona a execução de um Fluxo \texttt{Flux} de múltiplos dados, com as condições e ordem no repositório, ao receber junta os dados sequencialmente para não perder a ordem: existe uma espera para verificação da ordem (dentro da função usada), e dependendo dos dados obtidos, a resposta ao cliente dada é diferente. Uma Lista vazia é trocada por um fluxo \texttt{Mono} vazio (sem Lista), para identificar e trocar como uma resposta \texttt{404 Not found}.
 
-Mais exemplares encontram-se no anexo \hyperref[an3]{três}.
+Mais exemplares encontram-se no \hyperref[an3]{anexo três}.
 
 \newpage
 
@@ -301,14 +317,14 @@ No entanto a única diferença entre estes grupos é a carga informativa. Os mod
 
 Os restantes modelos são pertencentes aos atributos (ou pequenos agrupamentos) de uma Webshop, cujo objetivo principal é auxiliar os \textit{updates} dos campos das Webshops.
 
-Tomemos atenção aos exemplares do \hyperref[an4]{anexo 4} e do \hyperref[an5]{anexo 5}. Existe uma óbvia diferença entre os tipos de modelos como anteriormente referido e explicado, mas podemos ver mais algumas coisas, nomeadamente:
+Tomemos atenção aos exemplares do \hyperref[an4]{anexo quatro} e do \hyperref[an5]{anexo cinco}. Existe uma óbvia diferença entre os tipos de modelos como anteriormente referido e explicado, mas podemos ver mais algumas coisas, nomeadamente:
 
 \begin{itemize}
   \item As anotações e valores
   \item Os métodos
 \end{itemize}
 
-O primeiro ponto é óbvio, sendo que estes objetos Têm obrigatoriamente valores por defeito e uma obrigatória e pré-determinada ordem e lógica organizacional para os poder serializar e desserializar (via Jackson).
+O primeiro ponto é óbvio, sendo que estes objetos têm obrigatoriamente valores por defeito e uma obrigatória e pré-determinada ordem e lógica organizacional para os poder serializar e desserializar (via Jackson).
 
 O segundo ponto é referente à verificação dos campos (ou atributos) pela sua ``correctividade'' \textit{(correctness)} e pela sua obrigatoriedade nas condições do projeto atribuído. Esta verificação necessita, como podemos ver, de uma anotação \texttt{@JsonIgnore} para forçar o Jackson a ignorar o método \texttt{isValid} que é publico e de certa forma um atributo (a validez do objeto criado). Estas validações são feitas através de métodos simples e fáceis de ler, logo podemos assumir que são eficazes, rápidas de executar e que está entendido o seu funcionamento.
 
@@ -316,7 +332,7 @@ O segundo ponto é referente à verificação dos campos (ou atributos) pela sua
 
 \subsection{Repositórios}
 
-Estas classes lidam com as conceções e transações com a base de dados, as quais abstraem emfluxos do Project Reactor (Mono e Flux). Estas classes precisam de lidar de forma segura e com o menor conflito possivel com a base de dados, logo qualquer repositório que seja feito para as ações numa (e para só uma e exclusiva) tabela precisa de ser uma classe saída dos clássicos \textit{design patters}: um \textit{Singleton} ou um \textit{Monostate}.
+Estas classes lidam com as conceções e transações com a base de dados, as quais abstraem em fluxos do Project Reactor (Mono e Flux). Estas classes precisam de lidar de forma segura e com o menor conflito possível com a base de dados, logo qualquer repositório que seja feito para as ações numa (e para só uma e exclusiva) tabela precisa de ser uma classe saída dos clássicos \textit{design patters}: um \textit{Singleton} ou um \textit{Monostate}.
 
 Embora pessoalmente prefira usar o \textit{Monostate} pois este não quebra os conceitos \textit{Open/Closed Principle} e o \textit{Dependency Inversion Principle} do SOLID, é esperado e está preparado para ser usado \textit{Singletons} não só na framework, como também no ambiente de trabalho onde estive inserido. Como também que ao usar um \textit{Singleton} facilita para o propósito exclusivo desta classe.
 
@@ -329,7 +345,7 @@ Foram precisas usar duas classes, ou seja, dois repositórios. Sendo estas:
   \item \texttt{WebshopemailsRepository} (disponível no \hyperref[an7]{anexo 7})
 \end{itemize}
 
-Isto porque a base de dados apenas tem duas tabelas, inicialmente ponderado três tabelas, mas para facilitar o desenvolvimento decidi colocar as \textit{settings} das Webshops na tabela principal. Podemos ver no seguinte gráfico a estrutura da base de dados:
+Isto porque a base de dados apenas tem duas tabelas, tendo sido inicialmente ponderado a utilização de mais uma, mas para facilitar o desenvolvimento foi decidido colocar as \textit{settings} das Webshops na tabela principal. Podemos ver no seguinte gráfico (\textbf{Figura 5.2}) a estrutura da base de dados:
 
 \begin{figure}[!hbt]
   \centering
@@ -339,6 +355,6 @@ Isto porque a base de dados apenas tem duas tabelas, inicialmente ponderado trê
 \end{figure}
 \FloatBarrier
 
-Ou preferencialmente nas \textit{queries} SQL, disponíveis no \hyperref[an8]{anexo 8}.
+A \textit{queries} SQL estão disponíveis no \hyperref[an8]{anexo oito}.
 
 \newpage
